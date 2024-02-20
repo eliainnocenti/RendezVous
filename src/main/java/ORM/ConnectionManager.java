@@ -1,4 +1,5 @@
-package main.ORM;
+package main.java.ORM;
+
 import java.sql.*;
 
 public class ConnectionManager {
