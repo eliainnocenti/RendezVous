@@ -5,6 +5,7 @@ public class Event {
 
     // event data
     private String name, description, location, date, time;
+    private int code; // TODO - implement code generation (the code is a unique identifier for the event)
     private int maxParticipants;
     private boolean refundable;
     private float fee;
@@ -27,6 +28,7 @@ public class Event {
     public String getLocation() { return location; }
     public String getDate() { return date; }
     public String getTime() { return time; }
+    public int getCode() { return code; }
     public int getMaxParticipants() { return maxParticipants; }
     public boolean isRefundable() { return refundable; }
     public float getFee() { return fee; }

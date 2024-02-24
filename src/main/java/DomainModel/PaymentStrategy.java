@@ -7,5 +7,5 @@ public interface PaymentStrategy {
 
     String getPaymentMethod();
 
-    float calculateFee(Event event);
+    //float calculateFee(Event event);
 }
