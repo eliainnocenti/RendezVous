@@ -1,6 +1,6 @@
 package main.java.BusinessLogic;
 
-public class AdminController {
+public class EventPageController {
     // TODO: implement this class
 
 

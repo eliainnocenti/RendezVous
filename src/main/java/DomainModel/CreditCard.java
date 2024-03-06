@@ -1,20 +1,18 @@
 package main.java.DomainModel;
 
-public class CreditCard extends CreditCardPaymentStrategy {
-    // TODO: implement this class
+public class CreditCard implements PaymentStrategy {
 
     // owner data
     private String ownerName, ownerSurname;
 
     // card data
-    private String cardNumber, cardType, cardExpirationDate, cardSecurityCode;
+    private String cardNumber, cardExpirationDate, cardSecurityCode;
 
     // constructors
-    public CreditCard(String ownerName, String ownerSurname, String cardNumber, String cardType, String cardExpirationDate, String cardSecurityCode) {
+    public CreditCard(String ownerName, String ownerSurname, String cardNumber, String cardExpirationDate, String cardSecurityCode) {
         this.ownerName = ownerName;
         this.ownerSurname = ownerSurname;
         this.cardNumber = cardNumber;
-        this.cardType = cardType;
         this.cardExpirationDate = cardExpirationDate;
         this.cardSecurityCode = cardSecurityCode;
     }
@@ -25,12 +23,32 @@ public class CreditCard extends CreditCardPaymentStrategy {
 
     // getters - card data
     public String getCardNumber() { return cardNumber; }
-    public String getCardType() { return cardType; }
     public String getCardExpirationDate() { return cardExpirationDate; }
     public String getCardSecurityCode() { return cardSecurityCode; }
 
     public String getCreditCardData() {
-        return "Owner: " + ownerName + " " + ownerSurname + "\nCard number: " + cardNumber + "\nCard type: " + cardType + "\nExpiration date: " + cardExpirationDate + "\nSecurity code: " + cardSecurityCode;
+        return "Owner: " + ownerName + " " + ownerSurname + "\nCard number: " + cardNumber + "\nExpiration date: " + cardExpirationDate + "\nSecurity code: " + cardSecurityCode;
+    }
+
+    @Override
+    public void pay(Participation participation) {
+        // TODO: implement this method
+    }
+
+    @Override
+    public void refund() {
+        // TODO: implement this method
+        // refund all the people that paid for the event
+    }
+
+    @Override
+    public String getPaymentMethod() {
+        return "Credit card";
+    }
+
+    @Override
+    public String getPaymentData() {
+        return getCreditCardData();
     }
 
 }

@@ -1,11 +1,10 @@
 package main.java.DomainModel;
 
 public class Event {
-    // TODO: implement this class
 
     // event data
-    private String name, description, location, date, time;
     private int code; // TODO - implement code generation (the code is a unique identifier for the event)
+    private String name, description, location, date, time;
     private int maxParticipants;
     private boolean refundable;
     private float fee;
@@ -20,6 +19,9 @@ public class Event {
         this.maxParticipants = maxParticipants;
         this.refundable = refundable;
         this.fee = fee;
+    }
+    public Event(String name, String description, String location, String date, String time, int maxParticipants, float fee) {
+        this(name, description, location, date, time, maxParticipants, false, fee);
     }
 
     // getters

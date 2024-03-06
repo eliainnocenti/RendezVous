@@ -1,11 +1,13 @@
 package main.java.DomainModel;
 
 public interface PaymentStrategy {
-    // TODO: implement this interface
 
-    void pay(Participation participation, float fee);
+    // methods
+    void pay(Participation participation);
+    void refund(); // TODO: Event event or Participation participation?
 
+    // getters
     String getPaymentMethod();
+    String getPaymentData();
 
-    //float calculateFee(Event event);
 }
