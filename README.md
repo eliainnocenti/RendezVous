@@ -4,10 +4,6 @@
 
 text
 
-## How to run and build
-
-text
-
 ## Authors
 
 Elia Innocenti ([GitHub](https://github.com/eliainnocenti))

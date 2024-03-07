@@ -6,7 +6,7 @@ public class PayPal implements PaymentStrategy {
     private String ownerName, ownerSurname;
 
     // account data
-    private String uniqueCode, accountEmail, accountPassword; // TODO - implement code generation (the code is a unique identifier for the account)
+    private String uniqueCode, accountEmail, accountPassword;
 
     // constructors
     public PayPal(String ownerName, String ownerSurname, String uniqueCode, String accountEmail, String accountPassword) {

@@ -11,25 +11,30 @@ public class LoginController {
     public LoginController() {}
 
     // sign up
-    public void register() throws SQLException, ClassNotFoundException { // TODO: check payment method
+    public void register() throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
         // personal data
-        System.out.println("Welcome! Please provide the following information to register:");
+        System.out.println("\nWelcome! Please provide the following information to register:");
         System.out.println("Name: ");
         String name = scanner.nextLine();
         System.out.println("Surname: ");
         String surname = scanner.nextLine();
         System.out.println("Age: ");
-        int age = scanner.nextInt();
-        scanner.nextLine();
+        int age;
+        String ageString = scanner.nextLine();
+        if (ageString.isEmpty()) {
+            age = 1; // FIXME
+        } else {
+            age = Integer.parseInt(ageString);
+        }
 
         // login data
         String username, email, password;
         do {
-            System.out.println("Username, Email and Password are required fields.");
+            System.out.println("\u001B[3m" + "Username, Email and Password are required fields." + "\u001B[0m");
             System.out.println("Username: ");
             username = scanner.nextLine();
             System.out.println("Email: ");
@@ -50,16 +55,16 @@ public class LoginController {
             String cardSecurityCode = scanner.nextLine();
             userDAO.addUser(name, surname, age, username, email, password, paymentMethod, cardNumber, cardExpirationDate, cardSecurityCode);
         } else if (paymentMethod.equals("PayPal")) {
-            //System.out.println("Unique Code: ");
-            //String uniqueCode = scanner.nextLine();
-            System.out.println("\tEmail: ");
+            System.out.println("Email: ");
             String accountEmail = scanner.nextLine();
-            System.out.println("\tPassword: ");
+            System.out.println("Password: ");
             String accountPassword = scanner.nextLine();
             userDAO.addUser(name, surname, age, username, email, password, paymentMethod, null, accountEmail, accountPassword);
         } else {
             userDAO.addUser(name, surname, age, username, email, password);
         }
+
+        // FIXME: if the string is empty, is it better to set it to null or to an empty string?
 
     }
 
@@ -69,7 +74,7 @@ public class LoginController {
         Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
-        System.out.println("Username: ");
+        System.out.println("\nUsername: ");
         String username = scanner.nextLine();
         System.out.println("Password: ");
         String password = scanner.nextLine();
@@ -79,14 +84,15 @@ public class LoginController {
     }
 
     // admin login
-    public boolean adminLogin() {
+    public User adminLogin() throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
+        UserDAO userDAO = new UserDAO();
 
         System.out.println("Password Admin: ");
         String password = scanner.nextLine();
 
-        return password.equals("admin");
+        return userDAO.checkPassword("ADMIN",password);
 
     }
 

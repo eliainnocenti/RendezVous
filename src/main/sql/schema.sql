@@ -1,8 +1,6 @@
 -- table generation
 
 CREATE TABLE IF NOT EXISTS "CreditCard" (
-	ownerName VARCHAR(50),
-	ownerSurname VARCHAR(50),
 	cardNumber VARCHAR(50) PRIMARY KEY,
 	cardType VARCHAR(50),
 	cardExpirationDate VARCHAR(50),
@@ -11,10 +9,8 @@ CREATE TABLE IF NOT EXISTS "CreditCard" (
 
 
 CREATE TABLE IF NOT EXISTS "PayPal" (
-	ownerName VARCHAR(50),
-	ownerSurname VARCHAR(50),
 	uniqueCode SERIAL PRIMARY KEY,
-	accountEmail VARCHAR(100),
+	accountEmail VARCHAR(100) UNIQUE,
 	accountPassword VARCHAR(100)
 );
 
@@ -22,9 +18,9 @@ CREATE TABLE IF NOT EXISTS "User" (
     id SERIAL PRIMARY KEY,
 	name VARCHAR(50),
 	surname VARCHAR(50),
-	age INTEGER CONSTRAINT age_positive CHECK (age > 0 AND age < 150),
+	age INTEGER CONSTRAINT age_positive CHECK (age >= 0 AND age < 150),
 	username VARCHAR(50) NOT NULL UNIQUE,
-	email VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
 	password VARCHAR(100) NOT NULL,
 	creditCard VARCHAR(50) UNIQUE,
     payPal INTEGER UNIQUE,
@@ -40,9 +36,9 @@ CREATE TABLE IF NOT EXISTS "Event" (
 	location VARCHAR(100),
 	date VARCHAR(20),
 	time VARCHAR(20),
-	maxParticipants INTEGER,
 	refundable BOOLEAN,
-	fee FLOAT
+	fee FLOAT,
+	created_by VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS "Participation" (

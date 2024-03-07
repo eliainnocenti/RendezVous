@@ -3,18 +3,63 @@ package main.java.BusinessLogic;
 import main.java.DomainModel.User;
 
 public class UserProfileController {
-    // TODO: implement this class
 
     User user;
 
     public UserProfileController(User user) { this.user = user; }
 
-    // view profile
+    public void viewProfile() {
+        // TODO: implement this method
 
-    // personal data (view, set, change)
+    }
 
-    // login data (view, set, change)
+    public void updateName() {
+        // TODO: implement this method
 
-    // payment data (view, set, change)
+    }
+
+    public void updateSurname() {
+        // TODO: implement this method
+
+    }
+
+    public void updateAge() {
+        // TODO: implement this method
+
+    }
+
+    public void updateUsername() {
+        // TODO: implement this method
+
+    }
+
+    public void updateEmail() {
+        // TODO: implement this method
+
+    }
+
+    public void updatePassword() {
+        // TODO: implement this method
+
+    }
+
+    public void setPaymentMethod() {
+        // TODO: implement this method
+    }
+
+    public void updatePaymentMethod() {
+        // TODO: implement this method
+
+    }
+
+    public void updateCreditCard() {
+        // TODO: implement this method
+
+    }
+
+    public void updatePayPal() {
+        // TODO: implement this method
+
+    }
 
 }
