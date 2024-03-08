@@ -1,5 +1,7 @@
 -- table generation
 
+-- TODO: put some comments
+
 CREATE TABLE IF NOT EXISTS "CreditCard" (
 	cardNumber VARCHAR(50) PRIMARY KEY,
 	cardType VARCHAR(50),
@@ -38,7 +40,7 @@ CREATE TABLE IF NOT EXISTS "Event" (
 	time VARCHAR(20),
 	refundable BOOLEAN,
 	fee FLOAT,
-	created_by VARCHAR(50)
+	created_by INTEGER NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS "Participation" (
@@ -46,4 +48,11 @@ CREATE TABLE IF NOT EXISTS "Participation" (
 	event_id INTEGER,
 	paymentMethod VARCHAR(50),
 	PRIMARY KEY (user_id, event_id)
+);
+
+CREATE TABLE "Request" (
+	user_id INTEGER,
+	description VARCHAR(1000),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (user_id, created_at)
 );

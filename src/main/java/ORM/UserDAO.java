@@ -137,15 +137,6 @@ public class UserDAO {
         Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"User\" WHERE username = '%s'", username);
 
-        String query1 = String.format("SELECT creditCard FROM \"User\" WHERE username = '%s'", username);
-        String query2 = String.format("SELECT PayPal FROM \"User\" WHERE username = '%s'", username);
-        PreparedStatement psQuery1 = connection.prepareStatement(query1);
-        PreparedStatement psQuery2 = connection.prepareStatement(query2);
-        ResultSet rsQuery1 = psQuery1.executeQuery();
-        ResultSet rsQuery2 = psQuery2.executeQuery();
-        rsQuery1.next();
-        rsQuery2.next();
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
@@ -156,18 +147,41 @@ public class UserDAO {
         }
 
         // remove payment method (CASCADE DELETE)
-        if (rsQuery1.getString("creditCard") != null) {
+        removePaymentMethod(username);
+
+    }
+
+    public void removePaymentMethod(String username) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String query1 = String.format("SELECT creditCard FROM \"User\" WHERE username = '%s'", username);
+        String query2 = String.format("SELECT PayPal FROM \"User\" WHERE username = '%s'", username);
+        PreparedStatement psQuery1 = connection.prepareStatement(query1);
+        PreparedStatement psQuery2 = connection.prepareStatement(query2);
+        ResultSet rsQuery1 = psQuery1.executeQuery();
+        ResultSet rsQuery2 = psQuery2.executeQuery();
+
+        if (rsQuery1.next() && rsQuery1.getString("creditCard") != null) {
+            String sql = String.format("UPDATE \"User\" SET creditCard = NULL WHERE username = '%s'", username);
             String sql1 = String.format("DELETE FROM \"CreditCard\" WHERE cardNumber = '%s'", rsQuery1.getString("creditCard"));
             try {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.executeUpdate();
                 preparedStatement1.close();
             } catch (SQLException e) {
                 System.err.println("" + e.getMessage()); // TODO: add message
             }
-        } else if (rsQuery2.getString("PayPal") != null) {
+        } else if (rsQuery2.next() && rsQuery2.getString("PayPal") != null) {
+            String sql = String.format("UPDATE \"User\" SET PayPal = NULL WHERE username = '%s'", username);
             String sql2 = String.format("DELETE FROM \"PayPal\" WHERE uniqueCode = '%s'", rsQuery2.getString("PayPal"));
             try {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
                 PreparedStatement preparedStatement2 = connection.prepareStatement(sql2);
                 preparedStatement2.executeUpdate();
                 preparedStatement2.close();
@@ -260,12 +274,13 @@ public class UserDAO {
         Connection connection = ConnectionManager.getConnection();
         ArrayList<User> users = new ArrayList<>();
 
-        String sql = String.format("SELECT * FROM \"User\"");
+        String sql = String.format("SELECT * FROM \"User\" ORDER BY id ASC");
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
 
+            int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String surname = resultSet.getString("surname");
             int age = resultSet.getInt("age");
@@ -278,15 +293,15 @@ public class UserDAO {
                 PreparedStatement psQuery = connection.prepareStatement(query);
                 ResultSet rsQuery = psQuery.executeQuery();
                 rsQuery.next();
-                users.add(new User(name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode")));
+                users.add(new User(id, name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode")));
             } else if (resultSet.getString("PayPal") != null) {
                 String query = String.format("SELECT uniqueCode, accountEmail, accountPassword FROM \"PayPal\" WHERE uniqueCode = '%s'", resultSet.getString("PayPal"));
                 PreparedStatement psQuery = connection.prepareStatement(query);
                 ResultSet rsQuery = psQuery.executeQuery();
                 rsQuery.next();
-                users.add(new User(name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword")));
+                users.add(new User(id, name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword")));
             } else {
-                users.add(new User(name, surname, age, username, email, password));
+                users.add(new User(id, name, surname, age, username, email, password));
             }
 
         }
@@ -294,6 +309,198 @@ public class UserDAO {
         return users;
     }
 
-    // update user methods // TODO: implement these methods
+    public void updateName(String username, String name) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql = String.format("UPDATE \"User\" SET name = '%s' WHERE username = '%s'", name, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updateSurname(String username, String surname) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql = String.format("UPDATE \"User\" SET surname = '%s' WHERE username = '%s'", surname, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updateAge(String username, int age) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql = String.format("UPDATE \"User\" SET age = '%d' WHERE username = '%s'", age, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updateUsername(String username, String newUsername) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql1 = String.format("UPDATE \"User\" SET username = '%s' WHERE username = '%s'", newUsername, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql1);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updateEmail(String username, String email) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql = String.format("UPDATE \"User\" SET email = '%s' WHERE username = '%s'", email, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updatePassword(String username, String password) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql = String.format("UPDATE \"User\" SET password = '%s' WHERE username = '%s'", password, username);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updateCreditCard(String username, String cardNumber, String cardExpirationDate, String cardSecurityCode) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql1 = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
+                " VALUES ('%s', '%s', '%s')", cardNumber, cardExpirationDate, cardSecurityCode);
+
+        String sql2 = String.format("UPDATE \"User\" SET creditCard = '%s' WHERE username = '%s'", cardNumber, username);
+
+        try {
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement1.executeUpdate();
+            preparedStatement1.close();
+            PreparedStatement preparedStatement2 = connection.prepareStatement(sql2);
+            preparedStatement2.executeUpdate();
+            preparedStatement2.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public void updatePayPal(String username, String accountEmail, String accountPassword) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+
+        String sql1 = String.format("INSERT INTO \"PayPal\" (accountEmail, accountPassword) " +
+                " VALUES ('%s', '%s')", accountEmail, accountPassword);
+
+        String query = String.format("SELECT uniqueCode FROM \"PayPal\" WHERE accountEmail = '%s'", accountEmail);
+
+        try {
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement1.executeUpdate();
+            preparedStatement1.close();
+            PreparedStatement psQuery = connection.prepareStatement(query);
+            ResultSet resultSet = psQuery.executeQuery();
+            resultSet.next();
+            String sql2 = String.format("UPDATE \"User\" SET payPal = '%s' WHERE username = '%s'", resultSet.getString("uniqueCode"), username);
+            PreparedStatement preparedStatement2 = connection.prepareStatement(sql2);
+            preparedStatement2.executeUpdate();
+            preparedStatement2.close();
+            System.out.println(""); // TODO: add message
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+    }
+
+    public ArrayList<String> getAllUsernames() throws SQLException, ClassNotFoundException { // TODO: check
+
+        Connection connection = ConnectionManager.getConnection();
+        ArrayList<String> usernames = new ArrayList<>();
+
+        String sql = String.format("SELECT username FROM \"User\" ORDER BY id ASC");
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                usernames.add(resultSet.getString("username"));
+            }
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+        return usernames;
+    }
+
+    public ArrayList<String> getAllEmails() throws SQLException, ClassNotFoundException { // TODO: check
+
+        Connection connection = ConnectionManager.getConnection();
+        ArrayList<String> emails = new ArrayList<>();
+
+        String sql = String.format("SELECT email FROM \"User\" ORDER BY id ASC");
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                emails.add(resultSet.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage()); // TODO: add message
+        }
+
+        return emails;
+    }
 
 }

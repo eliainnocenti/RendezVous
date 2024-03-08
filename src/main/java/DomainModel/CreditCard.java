@@ -43,7 +43,7 @@ public class CreditCard implements PaymentStrategy {
 
     @Override
     public String getPaymentMethod() {
-        return "Credit card";
+        return "Credit Card";
     }
 
     @Override

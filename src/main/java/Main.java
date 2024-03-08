@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 // FIXME: the password attribute must be contained into "" (?) because it's important if there's capital letters.
+// TODO: implement the requests table in the database
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -43,7 +44,11 @@ public class Main {
                     if (user != null)
                         handleUserAction(user);
                 }
-                case "2" -> loginController.register();
+                case "2" -> {
+                    User user = loginController.register();
+                    if (user != null)
+                        handleUserAction(user);
+                }
                 case "3" -> {
                     if (loginController.adminLogin() != null)
                         handleAdminAction();
@@ -56,7 +61,7 @@ public class Main {
 
     }
 
-    public static void handleUserAction(User user) {
+    public static void handleUserAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -199,7 +204,7 @@ public class Main {
             } while (true);
     }
 
-    public static void handleUserProfileAction(User user) {
+    public static void handleUserProfileAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserProfileController userProfileController = new UserProfileController(user);
@@ -232,7 +237,7 @@ public class Main {
 
     }
 
-    public static void handleProfileEditorAction(User user) {
+    public static void handleProfileEditorAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -266,7 +271,7 @@ public class Main {
 
     }
 
-    public static void handleProfileEditorPersonalDataAction(User user) {
+    public static void handleProfileEditorPersonalDataAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserProfileController userProfileController = new UserProfileController(user);
@@ -301,7 +306,7 @@ public class Main {
 
     }
 
-    public static void handleProfileEditorLoginDataAction(User user) {
+    public static void handleProfileEditorLoginDataAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserProfileController userProfileController = new UserProfileController(user);
@@ -336,7 +341,7 @@ public class Main {
 
     }
 
-    public static void handleProfileEditorPaymentDataAction(User user) {
+    public static void handleProfileEditorPaymentDataAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserProfileController userProfileController = new UserProfileController(user);
@@ -352,9 +357,10 @@ public class Main {
                      PAYMENT DATA
                      1. Set a payment method
                      2. Change the payment method
-                     3. Update the credit card
-                     4. Update the PayPal account
-                     5. Go back
+                     3. Remove the payment method
+                     4. Update the credit card
+                     5. Update the PayPal account
+                     6. Go back
                     """
             );
 
@@ -363,9 +369,10 @@ public class Main {
             switch (input) {
                 case "1" -> userProfileController.setPaymentMethod();
                 case "2" -> userProfileController.updatePaymentMethod();
-                case "3" -> userProfileController.updateCreditCard();
-                case "4" -> userProfileController.updatePayPal();
-                case "5" -> { break label; }
+                case "3" -> userProfileController.removePaymentMethod();
+                case "4" -> userProfileController.updateCreditCard();
+                case "5" -> userProfileController.updatePayPal();
+                case "6" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
 
@@ -410,7 +417,7 @@ public class Main {
     public static void handleAdminUsersAction() throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
-        AdminUsersController adminUsersController = new AdminUsersController();
+        AdminUserController adminUserController = new AdminUserController();
 
         String input;
 
@@ -432,10 +439,10 @@ public class Main {
             input = scanner.nextLine();
 
             switch (input) {
-                case "1" -> adminUsersController.viewUsers();
-                case "2" -> adminUsersController.searchUser();
-                case "3" -> adminUsersController.addUser();
-                case "4" -> adminUsersController.removeUser();
+                case "1" -> adminUserController.viewUsers();
+                case "2" -> adminUserController.searchUser();
+                case "3" -> adminUserController.addUser();
+                case "4" -> adminUserController.removeUser();
                 case "5" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
@@ -447,7 +454,7 @@ public class Main {
     public static void handleAdminEventsAction() {
 
         Scanner scanner = new Scanner(System.in);
-        AdminEventsController adminEventsController = new AdminEventsController();
+        AdminEventController adminEventController = new AdminEventController();
 
         String input;
 
@@ -470,11 +477,11 @@ public class Main {
             input = scanner.nextLine();
 
             switch (input) {
-                case "1" -> adminEventsController.seeRequests();
-                case "2" -> adminEventsController.viewEvents();
-                case "3" -> adminEventsController.addEvent();
-                case "4" -> adminEventsController.editEvent();
-                case "5" -> adminEventsController.removeEvent();
+                case "1" -> adminEventController.seeRequests();
+                case "2" -> adminEventController.viewEvents();
+                case "3" -> adminEventController.addEvent();
+                case "4" -> adminEventController.editEvent();
+                case "5" -> adminEventController.removeEvent();
                 case "6" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
@@ -499,7 +506,8 @@ public class Main {
                      EXTRA
                      1. Reset password
                      2. Reset database
-                     3. Go back
+                     3. Generate a default database
+                     4. Go back
                     """
             );
 
@@ -508,7 +516,8 @@ public class Main {
             switch (input) {
                 case "1" -> adminExtraController.resetPassword();
                 case "2" -> adminExtraController.resetDatabase();
-                case "3" -> { break label; }
+                case "3" -> adminExtraController.generateDefaultDatabase();
+                case "4" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
 

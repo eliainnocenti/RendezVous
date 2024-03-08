@@ -1,6 +1,6 @@
 package main.java.BusinessLogic;
 
-public class AdminEventsController {
+public class AdminEventController {
 
     public void seeRequests() {
         // TODO: implement this method

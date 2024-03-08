@@ -1,10 +1,13 @@
 -- reset
 
+-- TODO: put some comments
+
 DROP TABLE IF EXISTS "User" CASCADE;
 DROP TABLE IF EXISTS "Event" CASCADE;
 DROP TABLE IF EXISTS "Participation" CASCADE;
 DROP TABLE IF EXISTS "CreditCard" CASCADE;
 DROP TABLE IF EXISTS "PayPal" CASCADE;
+DROP TABLE IF EXISTS "Request" CASCADE;
 
 CREATE TABLE "CreditCard" (
 	cardNumber VARCHAR(50) PRIMARY KEY,
@@ -43,7 +46,7 @@ CREATE TABLE "Event" (
 	time VARCHAR(20),
 	refundable BOOLEAN,
 	fee FLOAT,
-	created_by VARCHAR(50)
+	created_by INTEGER NOT NULL UNIQUE
 );
 
 CREATE TABLE "Participation" (
@@ -51,6 +54,13 @@ CREATE TABLE "Participation" (
 	event_id INTEGER,
 	paymentMethod VARCHAR(50),
 	PRIMARY KEY (user_id, event_id)
+);
+
+CREATE TABLE "Request" (
+	user_id INTEGER,
+	description VARCHAR(1000),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (user_id, created_at)
 );
 
 INSERT INTO "User" (id, username, email, password) VALUES (0, 'ADMIN', '', 'admin');

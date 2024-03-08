@@ -47,7 +47,7 @@ public class AdminExtraController {
 
         StringBuilder sql = new StringBuilder();
 
-        try (BufferedReader bufferedReader= new BufferedReader(new FileReader("src/main/sql/reset.sql"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/sql/reset.sql"))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 sql.append(line).append("\n");
@@ -62,10 +62,39 @@ public class AdminExtraController {
             PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            System.out.println("Database reset successfully.");
+            System.out.println("\nDatabase reset successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void generateDefaultDatabase() throws SQLException, ClassNotFoundException {
+
+        resetDatabase();
+
+        StringBuilder sql = new StringBuilder();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/sql/default.sql"))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sql.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        Connection connection = ConnectionManager.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println("Default database generated successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
     }
 
 }

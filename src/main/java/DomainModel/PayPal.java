@@ -6,13 +6,14 @@ public class PayPal implements PaymentStrategy {
     private String ownerName, ownerSurname;
 
     // account data
-    private String uniqueCode, accountEmail, accountPassword;
+    private int uniqueCode;
+    private String accountEmail, accountPassword;
 
     // constructors
     public PayPal(String ownerName, String ownerSurname, String uniqueCode, String accountEmail, String accountPassword) {
         this.ownerName = ownerName;
         this.ownerSurname = ownerSurname;
-        this.uniqueCode = uniqueCode;
+        this.uniqueCode = Integer.parseInt(uniqueCode);
         this.accountEmail = accountEmail;
         this.accountPassword = accountPassword;
     }
@@ -22,7 +23,7 @@ public class PayPal implements PaymentStrategy {
     public String getOwnerSurname() { return ownerSurname; }
 
     // getters - account data
-    public String getUniqueCode() { return uniqueCode; }
+    public int getUniqueCode() { return uniqueCode; }
     public String getAccountEmail() { return accountEmail; }
     public String getAccountPassword() { return accountPassword; }
 

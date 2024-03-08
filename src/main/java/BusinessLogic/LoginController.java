@@ -11,7 +11,7 @@ public class LoginController {
     public LoginController() {}
 
     // sign up
-    public void register() throws SQLException, ClassNotFoundException {
+    public User register() throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
@@ -26,7 +26,7 @@ public class LoginController {
         int age;
         String ageString = scanner.nextLine();
         if (ageString.isEmpty()) {
-            age = 1; // FIXME
+            age = 0;
         } else {
             age = Integer.parseInt(ageString);
         }
@@ -46,7 +46,7 @@ public class LoginController {
         // payment data
         System.out.println("Payment Method: ");
         String paymentMethod = scanner.nextLine();
-        if (paymentMethod.equals("CreditCard")) {
+        if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("creditcard") || paymentMethod.equals("credit card")) {
             System.out.println("Card Number: ");
             String cardNumber = scanner.nextLine();
             System.out.println("Card Expiration Date: ");
@@ -54,7 +54,7 @@ public class LoginController {
             System.out.println("Card Security Code: ");
             String cardSecurityCode = scanner.nextLine();
             userDAO.addUser(name, surname, age, username, email, password, paymentMethod, cardNumber, cardExpirationDate, cardSecurityCode);
-        } else if (paymentMethod.equals("PayPal")) {
+        } else if (paymentMethod.equals("PayPal") || paymentMethod.equals("paypal")) {
             System.out.println("Email: ");
             String accountEmail = scanner.nextLine();
             System.out.println("Password: ");
@@ -63,6 +63,8 @@ public class LoginController {
         } else {
             userDAO.addUser(name, surname, age, username, email, password);
         }
+
+        return userDAO.checkPassword(username, password);
 
         // FIXME: if the string is empty, is it better to set it to null or to an empty string?
 
@@ -89,7 +91,7 @@ public class LoginController {
         Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
-        System.out.println("Password Admin: ");
+        System.out.println("\nPassword Admin: ");
         String password = scanner.nextLine();
 
         return userDAO.checkPassword("ADMIN",password);
