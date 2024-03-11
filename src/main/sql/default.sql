@@ -1,6 +1,8 @@
 -- default
 
--- TODO: add some comments
+-- TODO: put some comments
+
+-- USERS
 
 -- first user
 INSERT INTO "User" (name, surname, age, username, email, password, creditCard, payPal)
@@ -27,3 +29,8 @@ BEGIN
     SELECT uniqueCode INTO PayPalUniqueCode FROM "PayPal" WHERE accountEmail = 'gio.verdi@gmail.com';
     UPDATE "User" SET payPal = PayPalUniqueCode WHERE username = 'gio.verdi7';
 END $$;
+
+-- EVENTS
+
+INSERT INTO "Event" (name, description, location, date, time, refundable, fee, created_by)
+             VALUES ('Rificolona', 'Festa della Rificolona', 'Ellera', '2024-09-10', '21:30', FALSE, 5.00, 1);

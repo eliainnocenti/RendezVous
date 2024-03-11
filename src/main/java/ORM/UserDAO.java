@@ -14,7 +14,7 @@ public class UserDAO {
 
         Connection connection = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO \"User\" (name, surname, age, username, email, password) " +
-                                   " VALUES ('%s', '%s', '%d', '%s', '%s', '%s')", name, surname, age, username, email, password);
+                                   "VALUES ('%s', '%s', '%d', '%s', '%s', '%s')", name, surname, age, username, email, password);
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -31,7 +31,7 @@ public class UserDAO {
 
         Connection connection = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO \"User\" (username, email, password) " +
-                                   " VALUES ('%s', '%s', '%s')", username, email, password);
+                                   "VALUES ('%s', '%s', '%s')", username, email, password);
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -53,16 +53,16 @@ public class UserDAO {
 
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("credit card") || paymentMethod.equals("creditcard")) {
             sql = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
-                                " VALUES ('%s', '%s', '%s');" +
+                                "VALUES ('%s', '%s', '%s');" +
                                 "INSERT INTO \"User\" (name, surname, age, username, email, password, creditCard) " +
-                                " VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s')",
+                                "VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s')",
                                 cardNumberORuniqueCode, cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword,
                                 name, surname, age, username, email, password, cardNumberORuniqueCode);
         } else if (paymentMethod.equals("PayPal") || paymentMethod.equals("paypal")) {
             sql = String.format("INSERT INTO \"PayPal\" (accountEmail, accountPassword) " +
-                                " VALUES ('%s', '%s');" +
+                                "VALUES ('%s', '%s');" +
                                 "INSERT INTO \"User\" (name, surname, age, username, email, password) " +
-                                " VALUES ('%s', '%s', '%d', '%s', '%s', '%s')",
+                                "VALUES ('%s', '%s', '%d', '%s', '%s', '%s')",
                                 cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword,
                                 name, surname, age, username, email, password);
             query = String.format("SELECT uniqueCode FROM \"PayPal\" WHERE accountEmail = '%s' AND accountPassword = '%s'", cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
@@ -97,16 +97,16 @@ public class UserDAO {
 
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("credit card") || paymentMethod.equals("creditcard")) {
             sql = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
-                            " VALUES ('%s', '%s', '%s');" +
+                            "VALUES ('%s', '%s', '%s');" +
                             "INSERT INTO \"User\" (username, email, password, creditCard) " +
-                            " VALUES ('%s', '%s', '%s', '%s')",
+                            "VALUES ('%s', '%s', '%s', '%s')",
                     cardNumberORuniqueCode, cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword,
                     username, email, password, cardNumberORuniqueCode);
         } else if (paymentMethod.equals("PayPal") || paymentMethod.equals("paypal")) {
             sql = String.format("INSERT INTO \"PayPal\" (accountEmail, accountPassword) " +
-                            " VALUES ('%s', '%s');" +
+                            "VALUES ('%s', '%s');" +
                             "INSERT INTO \"User\" (username, email, password) " +
-                            " VALUES ('%s', '%s', '%s')",
+                            "VALUES ('%s', '%s', '%s')",
                     cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword,
                     username, email, password);
             query = String.format("SELECT uniqueCode FROM \"PayPal\" WHERE accountEmail = '%s' AND accountPassword = '%s'", cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
@@ -235,8 +235,8 @@ public class UserDAO {
     public User getUser(String username) throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
-
         String sql = String.format("SELECT * FROM \"User\" WHERE username = '%s'", username);
+
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
 

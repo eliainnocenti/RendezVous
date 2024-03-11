@@ -82,7 +82,7 @@ public class User {
     }
 
     // getters - unique identifier
-    public String getId() { return Integer.toString(id); }
+    public int getId() { return id; }
 
     // getters - personal data
     public String getName() { return name; }

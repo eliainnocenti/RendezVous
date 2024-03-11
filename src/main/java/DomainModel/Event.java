@@ -7,9 +7,10 @@ public class Event {
     private String name, description, location, date, time;
     private boolean refundable;
     private float fee;
+    private int createdBy;
 
     // constructors
-    public Event(String name, String description, String location, String date, String time, boolean refundable, float fee) {
+    public Event(String name, String description, String location, String date, String time, boolean refundable, float fee, int createdBy) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -17,9 +18,10 @@ public class Event {
         this.time = time;
         this.refundable = refundable;
         this.fee = fee;
+        this.createdBy = createdBy;
     }
-    public Event(String name, String description, String location, String date, String time, float fee) {
-        this(name, description, location, date, time, false, fee);
+    public Event(String name, String description, String location, String date, String time, float fee, int createdBy) {
+        this(name, description, location, date, time, false, fee, createdBy);
     }
 
     // getters
@@ -31,6 +33,7 @@ public class Event {
     public int getCode() { return code; }
     public boolean isRefundable() { return refundable; }
     public float getFee() { return fee; }
+    public int getCreatedBy() { return createdBy; }
 
     public String getEventData() {
         return "Event: " + name + "\nDescription: " + description + "\nLocation: " + location + "\nDate: " + date + "\nTime: " + time + "\nRefundable: " + refundable + "\nFee: " + fee;
@@ -45,5 +48,6 @@ public class Event {
     public void setTime(String time) { this.time = time; }
     public void setRefundable(boolean refundable) { this.refundable = refundable; }
     public void setFee(float fee) { this.fee = fee; }
+    public void setCreatedBy(int createdBy) { this.createdBy = createdBy; }
 
 }

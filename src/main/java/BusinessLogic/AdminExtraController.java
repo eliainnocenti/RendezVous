@@ -16,7 +16,7 @@ public class AdminExtraController {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("New admin password: ");
+        System.out.println("\nNew admin password: ");
         String newPassword;
         do {
             newPassword = scanner.nextLine();

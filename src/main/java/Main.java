@@ -3,11 +3,40 @@ package main.java;
 import main.java.BusinessLogic.*;
 import main.java.DomainModel.*;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 // FIXME: the password attribute must be contained into "" (?) because it's important if there's capital letters.
-// TODO: implement the requests table in the database
+
+// TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
+
+// FIXME: think what is the best way to handle the exceptions
+/*
+
+    try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
+
+    oppure
+
+    try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println("");
+        } catch (SQLException e) {
+            System.err.println("" + e.getMessage());
+        }
+
+ */
+
+
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -95,7 +124,7 @@ public class Main {
 
     }
 
-    public static void handleEventPageAction(User user) {
+    public static void handleEventPageAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserEventPageController userEventPageController = new UserEventPageController(user);
@@ -132,7 +161,7 @@ public class Main {
 
     }
 
-    public static void handleEventManagementAction(User user) {
+    public static void handleEventManagementAction(User user) throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         UserEventManagementController userEventManagementController = new UserEventManagementController(user);
@@ -169,7 +198,7 @@ public class Main {
 
     }
 
-    public static void handleEventEditorAction(User user) {
+    public static void handleEventEditorAction(User user) throws SQLException, ClassNotFoundException {
 
             Scanner scanner = new Scanner(System.in);
             UserEventManagementController userEventManagementController = new UserEventManagementController(user);
@@ -451,7 +480,7 @@ public class Main {
 
     }
 
-    public static void handleAdminEventsAction() {
+    public static void handleAdminEventsAction() throws SQLException, ClassNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
         AdminEventController adminEventController = new AdminEventController();

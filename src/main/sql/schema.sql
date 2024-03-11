@@ -32,15 +32,15 @@ CREATE TABLE IF NOT EXISTS "User" (
 );
 
 CREATE TABLE IF NOT EXISTS "Event" (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(50),
+	code SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
 	description VARCHAR(500),
-	location VARCHAR(100),
-	date VARCHAR(20),
-	time VARCHAR(20),
-	refundable BOOLEAN,
-	fee FLOAT,
-	created_by INTEGER NOT NULL UNIQUE
+	location VARCHAR(100) NOT NULL,
+	date VARCHAR(20) NOT NULL,
+	time VARCHAR(20) NOT NULL,
+	refundable BOOLEAN NOT NULL,
+	fee FLOAT NOT NULL,
+	created_by INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "Participation" (
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS "Participation" (
 
 CREATE TABLE "Request" (
 	user_id INTEGER,
-	description VARCHAR(1000),
+	description VARCHAR(1000) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (user_id, created_at)
 );

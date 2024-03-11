@@ -110,6 +110,8 @@ public class UserProfileController {
 
         String newEmail;
 
+        System.out.println();
+
         do {
 
             System.out.println("New Email: ");
@@ -139,6 +141,8 @@ public class UserProfileController {
 
         String newPassword;
 
+        System.out.println();
+
         do {
 
             System.out.println("New Password: ");
@@ -160,7 +164,7 @@ public class UserProfileController {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Payment Method: ");
+        System.out.println("\nPayment Method: ");
         String paymentMethod = scanner.nextLine();
 
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("creditcard") || paymentMethod.equals("credit card")) {
@@ -184,7 +188,6 @@ public class UserProfileController {
 
     public void updatePaymentMethod() throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
         userDAO.removePaymentMethod(user.getUsername());
@@ -200,6 +203,7 @@ public class UserProfileController {
 
         userDAO.removePaymentMethod(user.getUsername());
 
+        System.out.println();
         System.out.println("Card Number: ");
         String cardNumber = scanner.nextLine();
         System.out.println("Card Expiration Date: ");
@@ -221,6 +225,7 @@ public class UserProfileController {
 
         userDAO.removePaymentMethod(user.getUsername());
 
+        System.out.println();
         System.out.println("Email: ");
         String accountEmail = scanner.nextLine();
         System.out.println("Password: ");
@@ -238,9 +243,11 @@ public class UserProfileController {
     public void removePaymentMethod() throws SQLException, ClassNotFoundException {
 
         UserDAO userDAO = new UserDAO();
+
         userDAO.removePaymentMethod(user.getUsername());
         user.setPaymentMethod(null);
-        System.out.println("Payment method removed successfully!");
+
+        System.out.println("\nPayment method removed successfully!");
 
     }
 
