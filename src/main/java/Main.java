@@ -3,7 +3,6 @@ package main.java;
 import main.java.BusinessLogic.*;
 import main.java.DomainModel.*;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -20,7 +19,7 @@ import java.util.Scanner;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connection.close();
+            preparedStatement.close();
         }
 
     oppure
@@ -36,7 +35,15 @@ import java.util.Scanner;
 
  */
 
+// FIXME: check all the .close() methods
 
+// FIXME: encapsulate methods in UserDAO using CreditCardDAO and PayPalDAO (check if there are more)
+
+// TODO: put messages in the try-catch blocks
+
+// TODO: put comments in sql files
+
+// TODO: general check of the code and general refactor
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -495,11 +502,13 @@ public class Main {
                      
                      EVENTS MANAGEMENT
                      1. See requests
-                     2. View events
-                     3. Create an event
-                     4. Edit an event
-                     5. Cancel an event
-                     6. Go back
+                     2. Remove a request
+                     3. Remove all requests
+                     4. View events
+                     5. Create an event
+                     6. Edit an event
+                     7. Cancel an event
+                     8. Go back
                     """
             );
 
@@ -507,11 +516,13 @@ public class Main {
 
             switch (input) {
                 case "1" -> adminEventController.seeRequests();
-                case "2" -> adminEventController.viewEvents();
-                case "3" -> adminEventController.addEvent();
-                case "4" -> adminEventController.editEvent();
-                case "5" -> adminEventController.removeEvent();
-                case "6" -> { break label; }
+                case "2" -> adminEventController.removeRequest();
+                case "3" -> adminEventController.removeAllRequests();
+                case "4" -> adminEventController.viewEvents();
+                case "5" -> adminEventController.addEvent();
+                case "6" -> adminEventController.editEvent();
+                case "7" -> adminEventController.removeEvent();
+                case "8" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
 

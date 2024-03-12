@@ -57,10 +57,11 @@ CREATE TABLE "Participation" (
 );
 
 CREATE TABLE "Request" (
-	user_id INTEGER,
+	code SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL,
 	description VARCHAR(1000) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (user_id, created_at)
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	--PRIMARY KEY (user_id, created_at)
 );
 
 INSERT INTO "User" (id, username, email, password) VALUES (0, 'ADMIN', '', 'admin');

@@ -1,8 +1,11 @@
 package main.java.BusinessLogic;
 
 import main.java.DomainModel.Event;
+import main.java.DomainModel.Participation;
 import main.java.DomainModel.Request;
+import main.java.DomainModel.User;
 import main.java.ORM.EventDAO;
+import main.java.ORM.ParticipationDAO;
 import main.java.ORM.RequestDAO;
 
 import java.sql.SQLException;
@@ -11,7 +14,7 @@ import java.util.Scanner;
 
 public class AdminEventController {
 
-    public void seeRequests() throws SQLException, ClassNotFoundException {
+    public void seeRequests() throws SQLException, ClassNotFoundException { // FIXME: table visualization
 
         RequestDAO requestDAO = new RequestDAO();
 
@@ -19,14 +22,41 @@ public class AdminEventController {
 
         System.out.println("\n+---------+----------------------------------------------------------------------------------------------------+---------------------+");
         System.out.println("| User ID | Description                                                                                        | Created At          |");
+        System.out.println("+---------+----------------------------------------------------------------------------------------------------+---------------------+");
         for (Request request : requests) {
-            System.out.println("+---------+----------------------------------------------------------------------------------------------------+---------------------+");
             System.out.printf("| %-7s | %-100s | %-19s |\n",
                     request.getUserId(),
                     request.getDescription(),
-                    request.getTimestamp());
+                    request.getCreated_at());
         }
         System.out.println("+---------+----------------------------------------------------------------------------------------------------+---------------------+");
+
+    }
+
+    public void removeRequest() throws SQLException, ClassNotFoundException {
+
+        Scanner scanner = new Scanner(System.in);
+        RequestDAO requestDAO = new RequestDAO();
+
+        int code;
+        do {
+            System.out.println("\nUser ID: ");
+            code = scanner.nextInt();
+        } while (code < 0);
+
+        requestDAO.removeRequest(code);
+
+        System.out.println("Request removed.");
+
+    }
+
+    public void removeAllRequests() throws SQLException, ClassNotFoundException {
+
+        RequestDAO requestDAO = new RequestDAO();
+
+        requestDAO.removeAllRequests();
+
+        System.out.println("All requests removed.");
 
     }
 
@@ -119,6 +149,7 @@ public class AdminEventController {
         do {
             System.out.println("\nEvent Code: ");
             code = scanner.nextInt();
+            scanner.nextLine();
         } while (code < 0);
 
         System.out.println("\nWhat do you want to change? (you can choose multiple options written in a space-separated list)");
@@ -175,7 +206,11 @@ public class AdminEventController {
                         System.out.println("New Fee: ");
                         fee = scanner.nextFloat();
                     } while (fee < 0);
-                    eventDAO.updateFee(code, fee);
+                    if (!eventDAO.getParticipants(code).isEmpty())
+                        eventDAO.updateFee(code, fee);
+                    else {
+                        System.out.println("Event has participants. Fee cannot be changed.");
+                    }
                 }
                 case "6" -> {
                     boolean refundable;
@@ -208,6 +243,22 @@ public class AdminEventController {
         eventDAO.removeEvent(code);
 
         System.out.println("Event removed.");
+
+        Event event = eventDAO.getEvent(code);
+
+        if (!event.isRefundable() || eventDAO.getParticipants(code).isEmpty())
+            return;
+
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        ArrayList<Participation> participations = participationDAO.getParticipationsByEvent(code);
+
+        // FIXME: with this implementation, the refund is done with the current user's payment method, not with the one used to pay for the event
+
+        for (Participation participation : participations) {
+            participation.getUser().getPaymentMethod().refund(event);
+            participationDAO.removeParticipation(participation.getUser().getId(), code);
+        }
 
     }
 

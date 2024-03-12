@@ -97,7 +97,8 @@ public class User {
     public String getLoginData() { return "Username: " + username + "\nEmail: " + email + "\nPassword: " + password; }
 
     // getters - payment data
-    public String getPaymentMethod() {
+    public PaymentStrategy getPaymentMethod() { return paymentMethod; }
+    public String getPaymentMethodType() {
         if (this.paymentMethod != null) {
             return paymentMethod.getPaymentMethod();
         } else {

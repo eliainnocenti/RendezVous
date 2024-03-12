@@ -1,6 +1,7 @@
 package main.java.BusinessLogic;
 
 import main.java.DomainModel.Event;
+import main.java.DomainModel.Participation;
 import main.java.DomainModel.User;
 import main.java.ORM.EventDAO;
 import main.java.ORM.ParticipationDAO;
@@ -94,13 +95,62 @@ public class UserEventPageController {
 
     }
 
-    public void attendAnEvent() {
-        // TODO: implement this method
+    public void attendAnEvent() throws SQLException, ClassNotFoundException {
+
+        Scanner scanner = new Scanner(System.in);
+        EventDAO eventDAO = new EventDAO();
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        System.out.println("\nEvent Code: ");
+        int code = scanner.nextInt();
+        scanner.nextLine();
+
+        if (eventDAO.getEvent(code) == null) {
+            System.out.println("Event not found.");
+            return;
+        }
+
+        if (participationDAO.getParticipation(user.getId(), code) != null) {
+            System.out.println("You have already attended the event.");
+            return;
+        }
+
+        if (eventDAO.getEvent(code).getCreatedBy() == user.getId()) {
+            System.out.println("You cannot attend an event you created.");
+            return;
+        }
+
+        user.getPaymentMethod().pay(eventDAO.getEvent(code));
+
+        participationDAO.addParticipation(user.getId(), code, user.getPaymentMethodType());
+
+        System.out.println("You have successfully attended the event.");
 
     }
 
-    public void viewAttendedEvents() {
-        // TODO: implement this method
+    public void viewAttendedEvents() throws SQLException, ClassNotFoundException {
+
+        // TODO: check table
+
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        System.out.println("\nEvents Attended:");
+
+        System.out.println("\n+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        System.out.println("| Code | Name                                               | Description                                        | Location                                     | Date                | Time                | Refundable | Fee     | Created By   |");
+        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        for (Participation participation : participationDAO.getParticipationsByUser(user.getId()))
+            System.out.printf("| %-4s | %-50s | %-50s | %-44s | %-19s | %-19s | %-10s | %-7s | %-12s |\n",
+                    participation.getEvent().getCode(),
+                    participation.getEvent().getName(),
+                    participation.getEvent().getDescription(),
+                    participation.getEvent().getLocation(),
+                    participation.getEvent().getDate(),
+                    participation.getEvent().getTime(),
+                    participation.getEvent().isRefundable() ? "Yes" : "No",
+                    Float.toString(participation.getEvent().getFee()),
+                    Integer.toString(participation.getEvent().getCreatedBy()));
+        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
 
     }
 

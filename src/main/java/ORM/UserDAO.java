@@ -149,6 +149,12 @@ public class UserDAO {
         // remove payment method (CASCADE DELETE)
         removePaymentMethod(username);
 
+        // remove requests (CASCADE DELETE)
+        removeRequests(username);
+
+        // remove participations (CASCADE DELETE)
+        removeParticipations(username);
+
     }
 
     public void removePaymentMethod(String username) throws SQLException, ClassNotFoundException {
@@ -192,6 +198,22 @@ public class UserDAO {
 
     }
 
+    public void removeRequests(String username) throws SQLException, ClassNotFoundException {
+
+        RequestDAO requestDAO = new RequestDAO();
+
+        requestDAO.removeAllRequestsByUser(username);
+
+    }
+
+    public void removeParticipations(String username) throws SQLException, ClassNotFoundException {
+
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        participationDAO.removeAllParticipationsByUser(username);
+
+    }
+
     public User checkPassword(String username, String password) throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
@@ -202,6 +224,7 @@ public class UserDAO {
 
         if (resultSet.next()) {
             if (resultSet.getString("password").equals(password)) {
+                int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String surname = resultSet.getString("surname");
                 int age = resultSet.getInt("age");
@@ -211,15 +234,15 @@ public class UserDAO {
                     PreparedStatement psQuery = connection.prepareStatement(query);
                     ResultSet rsQuery = psQuery.executeQuery();
                     rsQuery.next();
-                    return new User(name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode"));
+                    return new User(id, name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode"));
                 } else if (resultSet.getString("PayPal") != null) {
                     String query = String.format("SELECT uniqueCode, accountEmail, accountPassword FROM \"PayPal\" WHERE uniqueCode = '%s'", resultSet.getString("PayPal"));
                     PreparedStatement psQuery = connection.prepareStatement(query);
                     ResultSet rsQuery = psQuery.executeQuery();
                     rsQuery.next();
-                    return new User(name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword"));
+                    return new User(id, name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword"));
                 } else {
-                    return new User(name, surname, age, username, email, password);
+                    return new User(id, name, surname, age, username, email, password);
                 }
             } else {
                 System.out.println("Invalid password. Please try again.");
@@ -242,6 +265,7 @@ public class UserDAO {
 
         if (resultSet.next()) {
 
+            int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String surname = resultSet.getString("surname");
             int age = resultSet.getInt("age");
@@ -253,15 +277,53 @@ public class UserDAO {
                 PreparedStatement psQuery = connection.prepareStatement(query);
                 ResultSet rsQuery = psQuery.executeQuery();
                 rsQuery.next();
-                return new User(name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode"));
+                return new User(id, name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode"));
             } else if (resultSet.getString("PayPal") != null) {
                 String query = String.format("SELECT uniqueCode, accountEmail, accountPassword FROM \"PayPal\" WHERE uniqueCode = '%s'", resultSet.getString("PayPal"));
                 PreparedStatement psQuery = connection.prepareStatement(query);
                 ResultSet rsQuery = psQuery.executeQuery();
                 rsQuery.next();
-                return new User(name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword"));
+                return new User(id, name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword"));
             } else {
-                return new User(name, surname, age, username, email, password);
+                return new User(id, name, surname, age, username, email, password);
+            }
+
+        }
+
+        return null;
+    }
+
+    public User getUser(int id) throws SQLException, ClassNotFoundException {
+
+        Connection connection = ConnectionManager.getConnection();
+        String sql = String.format("SELECT * FROM \"User\" WHERE id = %d", id);
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+
+            String name = resultSet.getString("name");
+            String surname = resultSet.getString("surname");
+            int age = resultSet.getInt("age");
+            String username = resultSet.getString("username");
+            String email = resultSet.getString("email");
+            String password = resultSet.getString("password");
+
+            if (resultSet.getString("creditCard") != null) {
+                String query = String.format("SELECT cardNumber, cardExpirationDate, cardSecurityCode FROM \"CreditCard\" WHERE cardNumber = '%s'", resultSet.getString("creditCard"));
+                PreparedStatement psQuery = connection.prepareStatement(query);
+                ResultSet rsQuery = psQuery.executeQuery();
+                rsQuery.next();
+                return new User(id, name, surname, age, username, email, password, "CreditCard", rsQuery.getString("cardNumber"), rsQuery.getString("cardExpirationDate"), rsQuery.getString("cardSecurityCode"));
+            } else if (resultSet.getString("PayPal") != null) {
+                String query = String.format("SELECT uniqueCode, accountEmail, accountPassword FROM \"PayPal\" WHERE uniqueCode = '%s'", resultSet.getString("PayPal"));
+                PreparedStatement psQuery = connection.prepareStatement(query);
+                ResultSet rsQuery = psQuery.executeQuery();
+                rsQuery.next();
+                return new User(id, name, surname, age, username, email, password, "PayPal", rsQuery.getString("uniqueCode"), rsQuery.getString("accountEmail"), rsQuery.getString("accountPassword"));
+            } else {
+                return new User(id, name, surname, age, username, email, password);
             }
 
         }
@@ -461,7 +523,7 @@ public class UserDAO {
 
     }
 
-    public ArrayList<String> getAllUsernames() throws SQLException, ClassNotFoundException { // TODO: check
+    public ArrayList<String> getAllUsernames() throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
         ArrayList<String> usernames = new ArrayList<>();
@@ -482,7 +544,7 @@ public class UserDAO {
         return usernames;
     }
 
-    public ArrayList<String> getAllEmails() throws SQLException, ClassNotFoundException { // TODO: check
+    public ArrayList<String> getAllEmails() throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
         ArrayList<String> emails = new ArrayList<>();

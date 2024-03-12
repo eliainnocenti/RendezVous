@@ -51,6 +51,7 @@ public class UserEventManagementController {
         do {
             System.out.println("Event Fee: ");
             fee = scanner.nextFloat();
+            scanner.nextLine();
         } while (fee < 0);
 
         boolean refundable;
@@ -89,8 +90,37 @@ public class UserEventManagementController {
 
     }
 
-    public void viewCreatedEventsAttendees() {
-        // TODO: implement this method
+    public void viewCreatedEventsAttendees() throws SQLException, ClassNotFoundException {
+
+        Scanner scanner = new Scanner(System.in);
+        ParticipationDAO participationDAO = new ParticipationDAO();
+        EventDAO eventDAO = new EventDAO();
+
+        System.out.println("\nEvent Code: ");
+        int code = scanner.nextInt();
+        scanner.nextLine();
+
+        if (eventDAO.getEvent(code).getCreatedBy() == user.getId()){
+            System.out.println("You are the creator of the event.");
+            return;
+        }
+
+        System.out.println("\nAttendees:");
+
+        // TODO: check table
+
+        System.out.println("\n+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
+        System.out.println("| ID   | Name            | Surname         | Email           | Username        | Payment Method  |");
+        System.out.println("+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
+        for (User user : participationDAO.getParticipants(code))
+            System.out.printf("| %-4s | %-15s | %-15s | %-15s | %-15s | %-15s |\n",
+                    user.getId(),
+                    user.getName(),
+                    user.getSurname(),
+                    user.getEmail(),
+                    user.getUsername(),
+                    user.getPaymentMethodType());
+        System.out.println("+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
 
     }
 
@@ -101,6 +131,7 @@ public class UserEventManagementController {
 
         System.out.println("\nEvent Code: ");
         int code = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.println("New Description: ");
         String description = scanner.nextLine();
@@ -121,6 +152,7 @@ public class UserEventManagementController {
         do {
             System.out.println("\nEvent Code: ");
             code = scanner.nextInt();
+            scanner.nextLine();
         } while (eventDAO.getEvent(code).getCreatedBy() != user.getId());
 
         System.out.println("\nWhat do you want to change? (you can choose multiple options written in a space-separated list)");
@@ -212,6 +244,7 @@ public class UserEventManagementController {
         do {
             System.out.println("\nEvent Code: ");
             code = scanner.nextInt();
+            scanner.nextLine();
         } while (eventDAO.getEvent(code).getCreatedBy() != user.getId());
 
         String request = "| CANCEL | Event Code: " + code + " |";

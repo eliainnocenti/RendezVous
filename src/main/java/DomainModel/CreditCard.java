@@ -1,6 +1,12 @@
 package main.java.DomainModel;
 
+import java.util.Scanner;
+
 public class CreditCard implements PaymentStrategy {
+
+    // constants
+    private static final float REFUND_PERCENTAGE = 0.9f;
+    private static final float COMMISSION_PERCENTAGE = 0.01f;
 
     // owner data
     private String ownerName, ownerSurname;
@@ -17,6 +23,10 @@ public class CreditCard implements PaymentStrategy {
         this.cardSecurityCode = cardSecurityCode;
     }
 
+    // getters - constants
+    public static float getRefundPercentage() { return REFUND_PERCENTAGE; }
+    public static float getCommissionPercentage() { return COMMISSION_PERCENTAGE; }
+
     // getters - owner data
     public String getOwnerName() { return ownerName; }
     public String getOwnerSurname() { return ownerSurname; }
@@ -31,14 +41,75 @@ public class CreditCard implements PaymentStrategy {
     }
 
     @Override
-    public void pay(Participation participation) {
-        // TODO: implement this method
+    public void pay(Event event) {
+
+        // SIMULATE PAYMENT
+
+        float amount = event.getFee();
+        amount += amount * COMMISSION_PERCENTAGE;
+
+        System.out.println("\nPaying for event: " + event.getName());
+        System.out.println("Amount: " + amount + "€ (including " + (COMMISSION_PERCENTAGE * 100) + "% commission");
+
+        System.out.println("\nConfirm the payment? (yes/no)");
+
+        Scanner scanner = new Scanner(System.in);
+        String confirmation = scanner.nextLine().toLowerCase();
+
+        if (!confirmation.equals("yes")) {
+            System.out.println("Payment cancelled!");
+            return;
+        }
+
+        System.out.println("Paying with credit card...");
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Connecting to the bank...");
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Payment successful!");
     }
 
     @Override
-    public void refund() {
-        // TODO: implement this method
-        // refund all the people that paid for the event
+    public void refund(Event event) {
+
+        // SIMULATE REFUND
+
+        float amount = event.getFee();
+        amount += amount * REFUND_PERCENTAGE;
+
+        System.out.println("\nRefunding the payment...");
+
+        System.out.println("Event: " + event.getCode() + " " + event.getName() + ", User: " + ownerName + " " + ownerSurname);
+
+        System.out.println("Amount refundable: " + amount + "€ (including " + ((1 - REFUND_PERCENTAGE) * 100) + "% commission");
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Connecting to the bank...");
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Refund successful!");
+
     }
 
     @Override

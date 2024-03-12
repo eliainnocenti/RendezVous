@@ -177,7 +177,7 @@ public class EventDAO {
                 event.setCode(resultSet.getInt("code"));
                 events.add(event);
             }
-            resultSet.close();
+            //resultSet.close();
         } catch (SQLException e) {
             System.err.println("" + e.getMessage()); // TODO: add message
         }
@@ -210,10 +210,11 @@ public class EventDAO {
 
     }
 
-    public ArrayList<User> getEventParticipants(int code) {
-        // TODO: implement this method (use the ParticipationTable)
+    public ArrayList<User> getParticipants(int code) throws SQLException, ClassNotFoundException {
 
-        return null;
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        return participationDAO.getParticipants(code);
 
     }
 

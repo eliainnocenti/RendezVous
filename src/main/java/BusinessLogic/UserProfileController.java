@@ -21,8 +21,8 @@ public class UserProfileController {
         System.out.println("Username: " + user.getUsername());
         System.out.println("Email: " + user.getEmail());
         System.out.println("Password: " + user.getPassword());
-        if (user.getPaymentMethod() != null) {
-            System.out.println("Payment Method: " + user.getPaymentMethod());
+        if (user.getPaymentMethodType() != null) {
+            System.out.println("Payment Method: " + user.getPaymentMethodType());
             System.out.println("Payment Data: \n" + user.getPaymentData());
         }
 
