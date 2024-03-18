@@ -49,7 +49,7 @@ public class CreditCard implements PaymentStrategy {
         amount += amount * COMMISSION_PERCENTAGE;
 
         System.out.println("\nPaying for event: " + event.getName());
-        System.out.println("Amount: " + amount + "€ (including " + (COMMISSION_PERCENTAGE * 100) + "% commission");
+        System.out.println("Amount: " + amount + "€ (including " + (COMMISSION_PERCENTAGE * 100) + "% commission)");
 
         System.out.println("\nConfirm the payment? (yes/no)");
 
@@ -92,7 +92,7 @@ public class CreditCard implements PaymentStrategy {
 
         System.out.println("Event: " + event.getCode() + " " + event.getName() + ", User: " + ownerName + " " + ownerSurname);
 
-        System.out.println("Amount refundable: " + amount + "€ (including " + ((1 - REFUND_PERCENTAGE) * 100) + "% commission");
+        System.out.println("Amount refundable: " + amount + "€ (including " + ((1 - REFUND_PERCENTAGE) * 100) + "% commission)");
 
         try {
             Thread.sleep(100);

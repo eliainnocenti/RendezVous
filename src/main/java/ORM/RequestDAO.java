@@ -124,7 +124,7 @@ public class RequestDAO {
             if (resultSet.next()) {
                 request = new Request(resultSet.getInt("user_id"), resultSet.getString("created_at"), resultSet.getString("description"));
             }
-            connection.close();
+            resultSet.close();
         } catch (SQLException e) {
             System.err.println("" + e.getMessage()); // TODO: add message
         }
@@ -146,7 +146,7 @@ public class RequestDAO {
             if (resultSet.next()) {
                 request = new Request(resultSet.getInt("user_id"), resultSet.getString("created_at"), resultSet.getString("description"));
             }
-            connection.close();
+            resultSet.close();
         } catch (SQLException e) {
             System.err.println("" + e.getMessage()); // TODO: add message
         }
@@ -168,7 +168,7 @@ public class RequestDAO {
             while (resultSet.next()) {
                 requests.add(new Request(resultSet.getInt("user_id"), resultSet.getString("created_at"), resultSet.getString("description")));
             }
-            connection.close();
+            resultSet.close();
         } catch (SQLException e) {
             System.err.println("" + e.getMessage()); // TODO: add message
         }
@@ -189,7 +189,7 @@ public class RequestDAO {
             while (resultSet.next()) {
                 requests.add(new Request(resultSet.getInt("user_id"), resultSet.getString("created_at"), resultSet.getString("description")));
             }
-            connection.close();
+            resultSet.close();
         } catch (SQLException e) {
             System.err.println("" + e.getMessage()); // TODO: add message
         }

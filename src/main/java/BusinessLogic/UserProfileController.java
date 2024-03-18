@@ -164,6 +164,20 @@ public class UserProfileController {
 
         Scanner scanner = new Scanner(System.in);
 
+        if (user.getPaymentMethodType() != null) {
+            System.out.println("\nYou already have a payment method. Do you want to update it? (yes/no)");
+            String answer = scanner.nextLine();
+            if (answer.equals("yes")) {
+                try {
+                    updatePaymentMethod();
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                return;
+            }
+        }
+
         System.out.println("\nPayment Method: ");
         String paymentMethod = scanner.nextLine();
 

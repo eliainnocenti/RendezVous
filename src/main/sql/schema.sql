@@ -1,7 +1,5 @@
 -- table generation
 
--- TODO: put some comments
-
 CREATE TABLE IF NOT EXISTS "CreditCard" (
 	cardNumber VARCHAR(50) PRIMARY KEY,
 	cardType VARCHAR(50),

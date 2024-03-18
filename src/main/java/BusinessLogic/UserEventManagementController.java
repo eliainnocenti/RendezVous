@@ -100,27 +100,25 @@ public class UserEventManagementController {
         int code = scanner.nextInt();
         scanner.nextLine();
 
-        if (eventDAO.getEvent(code).getCreatedBy() == user.getId()){
-            System.out.println("You are the creator of the event.");
+        if (eventDAO.getEvent(code).getCreatedBy() != user.getId()){
+            System.out.println("You are not the creator of the event.");
             return;
         }
 
         System.out.println("\nAttendees:");
 
-        // TODO: check table
-
-        System.out.println("\n+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
-        System.out.println("| ID   | Name            | Surname         | Email           | Username        | Payment Method  |");
-        System.out.println("+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
+        System.out.println("\n+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
+        System.out.println("| ID   | Name            | Surname         | Email                               | Username        | Payment Method  |");
+        System.out.println("+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
         for (User user : participationDAO.getParticipants(code))
-            System.out.printf("| %-4s | %-15s | %-15s | %-15s | %-15s | %-15s |\n",
+            System.out.printf("| %-4s | %-15s | %-15s | %-35s | %-15s | %-15s |\n",
                     user.getId(),
                     user.getName(),
                     user.getSurname(),
                     user.getEmail(),
                     user.getUsername(),
                     user.getPaymentMethodType());
-        System.out.println("+------+-----------------+-----------------+-----------------+-----------------+-----------------+");
+        System.out.println("+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
 
     }
 

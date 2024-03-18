@@ -14,7 +14,9 @@ import java.util.Scanner;
 
 public class AdminEventController {
 
-    public void seeRequests() throws SQLException, ClassNotFoundException { // FIXME: table visualization
+    public void seeRequests() throws SQLException, ClassNotFoundException {
+
+        // FIXME: table visualization
 
         RequestDAO requestDAO = new RequestDAO();
 

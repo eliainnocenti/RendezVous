@@ -6,45 +6,6 @@ import main.java.DomainModel.*;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-// FIXME: the password attribute must be contained into "" (?) because it's important if there's capital letters.
-
-// TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
-
-// FIXME: think what is the best way to handle the exceptions
-/*
-
-    try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            preparedStatement.close();
-        }
-
-    oppure
-
-    try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println("");
-        } catch (SQLException e) {
-            System.err.println("" + e.getMessage());
-        }
-
- */
-
-// FIXME: check all the .close() methods
-
-// FIXME: encapsulate methods in UserDAO using CreditCardDAO and PayPalDAO (check if there are more)
-
-// TODO: put messages in the try-catch blocks
-
-// TODO: put comments in sql files
-
-// TODO: general check of the code and general refactor
-
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
@@ -406,8 +367,8 @@ public class Main {
                 case "1" -> userProfileController.setPaymentMethod();
                 case "2" -> userProfileController.updatePaymentMethod();
                 case "3" -> userProfileController.removePaymentMethod();
-                case "4" -> userProfileController.updateCreditCard();
-                case "5" -> userProfileController.updatePayPal();
+                case "4" -> userProfileController.updateCreditCard(); // FIXME: is it redundant?
+                case "5" -> userProfileController.updatePayPal(); // FIXME: is it redundant?
                 case "6" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }

@@ -1,6 +1,4 @@
--- reset
-
--- TODO: put some comments
+-- reset file
 
 DROP TABLE IF EXISTS "User" CASCADE;
 DROP TABLE IF EXISTS "Event" CASCADE;

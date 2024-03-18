@@ -18,7 +18,6 @@ public class UserEventPageController {
 
     public void viewEvents() throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
 
         ArrayList<Event> allEvents = eventDAO.getAllEvents();
@@ -129,8 +128,6 @@ public class UserEventPageController {
     }
 
     public void viewAttendedEvents() throws SQLException, ClassNotFoundException {
-
-        // TODO: check table
 
         ParticipationDAO participationDAO = new ParticipationDAO();
 
