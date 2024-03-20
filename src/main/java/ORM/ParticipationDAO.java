@@ -245,7 +245,7 @@ public class ParticipationDAO {
     public ArrayList<Participation> getAllParticipations() throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"Participation\"");
+        String sql = String.format("SELECT * FROM \"Participation\" ORDER BY event_id, user_id");
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

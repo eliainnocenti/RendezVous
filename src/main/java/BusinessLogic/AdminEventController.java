@@ -16,22 +16,20 @@ public class AdminEventController {
 
     public void seeRequests() throws SQLException, ClassNotFoundException {
 
-        // FIXME: table visualization
-
         RequestDAO requestDAO = new RequestDAO();
 
         ArrayList<Request> requests = requestDAO.getAllRequests();
 
-        System.out.println("\n+---------+----------------------------------------------------------------------------------------------------+---------------------+");
-        System.out.println("| User ID | Description                                                                                        | Created At          |");
-        System.out.println("+---------+----------------------------------------------------------------------------------------------------+---------------------+");
+        System.out.println("\n+---------+------------------------------------------------------------------------------------------------------+----------------------------+");
+        System.out.println("| User ID | Description                                                                                          | Created At                 |");
+        System.out.println("+---------+------------------------------------------------------------------------------------------------------+----------------------------+");
         for (Request request : requests) {
             System.out.printf("| %-7s | %-100s | %-19s |\n",
                     request.getUserId(),
                     request.getDescription(),
                     request.getCreated_at());
         }
-        System.out.println("+---------+----------------------------------------------------------------------------------------------------+---------------------+");
+        System.out.println("+---------+------------------------------------------------------------------------------------------------------+----------------------------+");
 
     }
 
@@ -64,7 +62,6 @@ public class AdminEventController {
 
     public void viewEvents() throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
 
         ArrayList<Event> allEvents = eventDAO.getAllEvents();
@@ -264,4 +261,23 @@ public class AdminEventController {
 
     }
 
+    public void viewParticipations() throws SQLException, ClassNotFoundException {
+
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        ArrayList<Participation> participations = participationDAO.getAllParticipations();
+
+        System.out.println("\n+-------+------------------------------+------+----------------+----------------+");
+        System.out.println("| Event | Event Name                   | User | username       | Payment Method |");
+        System.out.println("+-------+------------------------------+------+----------------+----------------+");
+        for (Participation participation : participations)
+            System.out.printf("| %-5d | %-28s | %-4d | %-14s | %-14s |\n",
+                    participation.getEvent().getCode(),
+                    participation.getEvent().getName(),
+                    participation.getUser().getId(),
+                    participation.getUser().getUsername(),
+                    participation.getUser().getPaymentMethodType());
+        System.out.println("+-------+------------------------------+------+----------------+----------------+");
+
+    }
 }

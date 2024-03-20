@@ -151,4 +151,33 @@ public class UserEventPageController {
 
     }
 
+    public void removeParticipation() throws SQLException, ClassNotFoundException {
+
+        Scanner scanner = new Scanner(System.in);
+        ParticipationDAO participationDAO = new ParticipationDAO();
+
+        System.out.println("\nEvent Code: ");
+        int code = scanner.nextInt();
+        scanner.nextLine();
+
+        Event event = participationDAO.getParticipation(user.getId(), code).getEvent();
+
+        if (event == null) {
+            System.out.println("You have not attended the event.");
+            return;
+        }
+
+        participationDAO.removeParticipation(user.getId(), code);
+
+        System.out.println("You have successfully removed your participation.");
+
+        // FIXME: with this implementation, the refund is done with the current user's payment method, not with the one used to pay for the event
+
+        if (event.getFee() > 0 && event.isRefundable()) {
+            user.getPaymentMethod().refund(event);
+            System.out.println("You have been refunded.");
+        }
+
+    }
+
 }

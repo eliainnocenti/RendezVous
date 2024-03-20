@@ -47,6 +47,10 @@ public class PayPal implements PaymentStrategy {
         // SIMULATE PAYMENT
 
         float amount = event.getFee();
+
+        if (amount < 0) throw new IllegalArgumentException("Invalid amount");
+        if (amount == 0) return;
+
         amount += amount * COMMISSION_PERCENTAGE;
 
         System.out.println("\nPaying for event: " + event.getName());

@@ -1,6 +1,5 @@
 -- default database file
 
-
 -- USERS
 
 -- first user
@@ -151,7 +150,7 @@ INSERT INTO "Participation" (user_id, event_id, paymentMethod)
                      VALUES (3, 8, 'PayPal');
 
 INSERT INTO "Participation" (user_id, event_id, paymentMethod)
-                     VALUES (3, 19, 'PayPal');
+                     VALUES (3, 9, 'PayPal');
 
 INSERT INTO "Participation" (user_id, event_id, paymentMethod)
                      VALUES (3, 10, 'PayPal');
