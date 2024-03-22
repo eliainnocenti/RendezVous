@@ -1,33 +1,33 @@
-// TODOS AND FIXMES
-
-// TODO: implement remove participation (user)
-
-// FIXME: the password attribute must be contained into "" (?) because it's important if there's capital letters.
+// TODOs AND FIXMEs
 
 // TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
 
 // FIXME: think what is the best way to handle the exceptions
 /*
 
+    PreparedStatement preparedStatement = null;
     try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            preparedStatement.close();
-        }
+        preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.executeUpdate();
+        System.out.println(""); // add a message
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // or System.err.println("" + e.getMessage());
+    } finally {
+        preparedStatement.close();
+    }
 
     or
 
     try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println("");
-        } catch (SQLException e) {
-            System.err.println("" + e.getMessage());
-        }
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        System.out.println("");
+    } catch (SQLException e) {
+        System.err.println("" + e.getMessage());
+        // or e.printStackTrace();
+    }
 
 */
 
@@ -37,10 +37,8 @@
 
 // TODO: put messages in the try-catch blocks
 
-// TODO: general check of the code and general refactor
-
-// TODO: decide if it's opportune to test the DomainModel classes' methods
-
 // TODO: decide if it's opportune to test the DAO classes' methods
 
 // TODO: implement the tests
+
+// TODO: general check of the code and general refactor

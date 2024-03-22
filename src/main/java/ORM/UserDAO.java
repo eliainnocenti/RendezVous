@@ -51,6 +51,8 @@ public class UserDAO {
         String sql2;
         String query = "";
 
+        // TODO: extract CreditCardDAO and PayPalDAO methods
+
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("credit card") || paymentMethod.equals("creditcard")) {
             sql = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
                                 "VALUES ('%s', '%s', '%s');" +
@@ -94,6 +96,8 @@ public class UserDAO {
         String sql = "";
         String sql2;
         String query = "";
+
+        // TODO: extract CreditCardDAO and PayPalDAO methods
 
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("credit card") || paymentMethod.equals("creditcard")) {
             sql = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
@@ -161,6 +165,8 @@ public class UserDAO {
 
         Connection connection = ConnectionManager.getConnection();
 
+        // TODO: extract CreditCardDAO and PayPalDAO methods
+
         String query1 = String.format("SELECT creditCard FROM \"User\" WHERE username = '%s'", username);
         String query2 = String.format("SELECT PayPal FROM \"User\" WHERE username = '%s'", username);
         PreparedStatement psQuery1 = connection.prepareStatement(query1);
@@ -222,6 +228,8 @@ public class UserDAO {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
 
+        // TODO: extract CreditCardDAO and PayPalDAO methods
+
         if (resultSet.next()) {
             if (resultSet.getString("password").equals(password)) {
                 int id = resultSet.getInt("id");
@@ -263,6 +271,8 @@ public class UserDAO {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
 
+        // TODO: extract CreditCardDAO and PayPalDAO methods
+
         if (resultSet.next()) {
 
             int id = resultSet.getInt("id");
@@ -300,6 +310,8 @@ public class UserDAO {
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
+
+        // TODO: extract CreditCardDAO and PayPalDAO methods
 
         if (resultSet.next()) {
 
@@ -339,6 +351,8 @@ public class UserDAO {
         String sql = String.format("SELECT * FROM \"User\" ORDER BY id ASC");
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
+
+        // TODO: extract CreditCardDAO and PayPalDAO methods
 
         while (resultSet.next()) {
 
@@ -477,6 +491,8 @@ public class UserDAO {
 
         Connection connection = ConnectionManager.getConnection();
 
+        // TODO: extract CreditCardDAO methods
+
         String sql1 = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
                 " VALUES ('%s', '%s', '%s')", cardNumber, cardExpirationDate, cardSecurityCode);
 
@@ -499,6 +515,8 @@ public class UserDAO {
     public void updatePayPal(String username, String accountEmail, String accountPassword) throws SQLException, ClassNotFoundException {
 
         Connection connection = ConnectionManager.getConnection();
+
+        // TODO: extract PayPalDAO methods
 
         String sql1 = String.format("INSERT INTO \"PayPal\" (accountEmail, accountPassword) " +
                 " VALUES ('%s', '%s')", accountEmail, accountPassword);

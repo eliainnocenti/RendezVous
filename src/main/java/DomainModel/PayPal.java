@@ -48,7 +48,7 @@ public class PayPal implements PaymentStrategy {
 
         float amount = event.getFee();
 
-        if (amount < 0) throw new IllegalArgumentException("Invalid amount");
+        if (amount < 0) throw new IllegalArgumentException("\nInvalid amount");
         if (amount == 0) return;
 
         amount += amount * COMMISSION_PERCENTAGE;
@@ -91,9 +91,9 @@ public class PayPal implements PaymentStrategy {
         // SIMULATE REFUND
 
         float amount = event.getFee();
-        amount += amount * REFUND_PERCENTAGE;
+        amount *= REFUND_PERCENTAGE;
 
-        System.out.println("Refunding the payment...");
+        System.out.println("\nRefunding the payment...");
 
         System.out.println("Event: " + event.getCode() + " " + event.getName() + ", User: " + ownerName + " " + ownerSurname);
 
@@ -105,7 +105,7 @@ public class PayPal implements PaymentStrategy {
             e.printStackTrace();
         }
 
-        System.out.println("Connecting to the bank...");
+        System.out.println("Connecting to the server...");
 
         try {
             Thread.sleep(1000);

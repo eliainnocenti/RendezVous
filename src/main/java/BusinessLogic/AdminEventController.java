@@ -3,7 +3,6 @@ package main.java.BusinessLogic;
 import main.java.DomainModel.Event;
 import main.java.DomainModel.Participation;
 import main.java.DomainModel.Request;
-import main.java.DomainModel.User;
 import main.java.ORM.EventDAO;
 import main.java.ORM.ParticipationDAO;
 import main.java.ORM.RequestDAO;

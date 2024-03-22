@@ -54,4 +54,10 @@ class AdminEventControllerTest {
 
     }
 
+    @Test
+    void viewParticipationsTest() {
+        // TODO: implement this test
+
+    }
+
 }

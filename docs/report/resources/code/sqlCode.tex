@@ -1,0 +1,32 @@
+%! Author = eliainnocenti
+%! Date = 21/03/24
+
+\usepackage{listings}
+
+% sql code (postgresql)
+
+% TODO - put sql codes here
+
+\lstnewenvironment{sqlCode1_tmpname}
+{
+    \begin{lstlisting}[language=SQL, label=lst:sqlCode1_tmpname]
+
+        CREATE TABLE "CreditCard" (
+	        cardNumber VARCHAR(50) PRIMARY KEY,
+	        cardType VARCHAR(50),
+	        cardExpirationDate VARCHAR(50),
+	        cardSecurityCode VARCHAR(50)
+        );
+
+    \end{lstlisting}
+}
+
+\lstnewenvironment{sqlCode2_tmpname}
+{
+    \begin{lstlisting}[language=SQL, label=lst:sqlCode2_tmpname]
+
+        INSERT INTO "CreditCard" (cardNumber, cardExpirationDate, cardSecurityCode)
+            VALUES ('135895322', '2025-12-31', '473');
+
+    \end{lstlisting}
+}

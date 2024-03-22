@@ -47,7 +47,7 @@ public class CreditCard implements PaymentStrategy {
 
         float amount = event.getFee();
 
-        if (amount < 0) throw new IllegalArgumentException("Invalid amount");
+        if (amount < 0) throw new IllegalArgumentException("\nInvalid amount");
         if (amount == 0) return;
 
         amount += amount * COMMISSION_PERCENTAGE;
@@ -90,13 +90,13 @@ public class CreditCard implements PaymentStrategy {
         // SIMULATE REFUND
 
         float amount = event.getFee();
-        amount += amount * REFUND_PERCENTAGE;
+        amount *= REFUND_PERCENTAGE;
 
         System.out.println("\nRefunding the payment...");
 
         System.out.println("Event: " + event.getCode() + " " + event.getName() + ", User: " + ownerName + " " + ownerSurname);
 
-        System.out.println("Amount refundable: " + amount + "€ (including " + ((1 - REFUND_PERCENTAGE) * 100) + "% commission)");
+        System.out.println("Amount refundable: " + amount + "€ (including " + Math.round((1 - REFUND_PERCENTAGE) * 1000) / 10.0 + "% commission)");
 
         try {
             Thread.sleep(100);

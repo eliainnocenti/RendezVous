@@ -18,11 +18,7 @@
 \usepackage{hyperref}
 
 % Images path
-\graphicspath{ {./resources/images/} % TODO - check
-}
-
-% Codes path
-% TODO - implement
+\graphicspath{ {./resources/images/} }
 
 % Layout settings % TODO - check
 \renewcommand{\contentsname}{Index}
@@ -52,92 +48,199 @@
 % Document intestation
 \title{RendezVous \\
 \vspace{0.5em}
-\large ...}
+\large Software per la creazione e partecipazione di eventi} % FIXME - i don't like it
 \author{Elia Innocenti}
-\date{Marzo 2024}
+\date{Marzo - Aprile 2024}
 
 % Document
 \begin{document}
 
+    % FIRST PAGE
+
     \maketitle
 
+    \vspace{1em}
+
+    \begin{figure}[h]
+        \begin{minipage}{\textwidth}
+            \centering
+            \includegraphics[width=3cm]{unifi-logo}
+        \end{minipage}
+        \label{fig:uni-logo}
+    \end{figure}
+
+    % FIXME - i don't like it
+    %\begin{figure}[b]
+    %    \begin{minipage}{\textwidth}
+    %        \centering
+    %        \href{https://github.com/eliainnocenti/RendezVous}{
+    %            \hspace{.3em}
+    %            \raisebox{0\height}{\includegraphics[width=1.2cm]{github-logo}}
+    %            %\hspace{.3em}
+    %            \Large{}
+    %        }
+    %    \end{minipage}
+    %    \label{fig:github-logo}
+    %\end{figure}
+
+    % INDEX
+
+    \newpage
+
     \tableofcontents
+
+    % CONTENT
 
     \newpage
 
     \section{Introduzione} \label{sec:introduzione}
 
+        text
+
     \section{Progettazione} \label{sec:progettazione}
+
+        text
 
         \subsection{Use Case Diagram} \label{subsec:use-case-diagram}
 
+            text
+
         \subsection{Use Case Template} \label{subsec:use-case-template}
+
+            text
 
         \subsection{Mockups} \label{subsec:mockups}
 
+            text
+
         \subsection{Class Diagram} \label{subsec:class-diagram}
+
+            text
 
         \subsection{ER Diagram} \label{subsec:er-diagram}
 
+            text
+
         \subsection{Struttura delle directory} \label{subsec:struttura-delle-directory}
+
+            text
 
     \section{Implementazione} \label{sec:implementazione}
 
         \subsection{Domain Model} \label{subsec:domain-model}
 
+            text
+
             \subsubsection{User} \label{subsubsec:user}
+
+                text
 
             \subsubsection{Event} \label{subsubsec:event}
 
+                text
+
             \subsubsection{Participation} \label{subsubsec:participation}
+
+                text
 
             \subsubsection{Request} \label{subsubsec:request}
 
+                text
+
             \subsubsection{PaymentStrategy} \label{subsubsec:pament-strategy}
+
+                text
 
             \subsubsection{CreditCard} \label{subsubsec:credit-card}
 
+                text
+
             \subsubsection{PayPal} \label{subsubsec:paypal}
+
+                text
 
         \subsection{Business Logic} \label{subsec:business-logic}
 
+            text
+
             \subsubsection{LoginController} \label{subsubsec:login-controller}
+
+                text
 
             \subsubsection{UserEventPageController} \label{subsubsec:user-event-page-controller}
 
+                text
+
             \subsubsection{UserEventManagementController} \label{subsubsec:user-event-management-controller}
+
+                text
 
             \subsubsection{UserProfileController} \label{subsubsec:user-profile-controller}
 
+                text
+
             \subsubsection{AdminEventController} \label{subsubsec:admin-event-controller}
+
+                text
 
             \subsubsection{AdminUserController} \label{subsubsec:admin-user-controller}
 
+                text
+
             \subsubsection{AdminExtraController} \label{subsubsec:admin-extra-controller}
+
+                text
 
         \subsection{ORM} \label{subsec:orm}
 
+            text
+
             \subsubsection{ConnectionManager} \label{subsubsec:connection-manager}
+
+                text
 
             \subsubsection{UserDAO} \label{subsubsec:user-dao}
 
+                text
+
             \subsubsection{EventDAO} \label{subsubsec:event-dao}
+
+                text
 
             \subsubsection{ParticipationDAO} \label{subsubsec:participation-dao}
 
+                text
+
             \subsubsection{RequestDAO} \label{subsubsec:request-dao}
+
+                text
 
             \subsubsection{CreditCardDAO} \label{subsubsec:credit-card-dao}
 
+                text
+
             \subsubsection{PayPalDAO} \label{subsubsec:paypal-dao}
+
+                text
 
         \subsection{Database} \label{subsec:database}
 
+            text
+
     \section{Testing} \label{sec:testing}
+
+        text
 
         \subsection{Business Logic Testing} \label{subsec:business-logic-testing}
 
+            text
+
+        \subsection{Domain Model Testing} \label{subsec:domain-model-testing}
+
+            text
+
         \subsection{ORM Testing} \label{subsec:orm-testing}
 
+            text
 
 \end{document}

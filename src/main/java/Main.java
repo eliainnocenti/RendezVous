@@ -110,7 +110,8 @@ public class Main {
                      2. Search an event
                      3. Attend an event
                      4. View the events you are attending
-                     5. Go back
+                     5. Unattend an event
+                     6. Go back
                     """
             );
 
@@ -121,7 +122,8 @@ public class Main {
                 case "2" -> userEventPageController.searchAnEvent();
                 case "3" -> userEventPageController.attendAnEvent();
                 case "4" -> userEventPageController.viewAttendedEvents();
-                case "5" -> { break label; }
+                case "5" -> userEventPageController.removeParticipation();
+                case "6" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
 
@@ -469,7 +471,8 @@ public class Main {
                      5. Create an event
                      6. Edit an event
                      7. Cancel an event
-                     8. Go back
+                     8. View all the participations
+                     9. Go back
                     """
             );
 
@@ -483,7 +486,8 @@ public class Main {
                 case "5" -> adminEventController.addEvent();
                 case "6" -> adminEventController.editEvent();
                 case "7" -> adminEventController.removeEvent();
-                case "8" -> { break label; }
+                case "8" -> adminEventController.viewParticipations();
+                case "9" -> { break label; }
                 default -> System.out.println("Invalid input. Please try again.");
             }
 
