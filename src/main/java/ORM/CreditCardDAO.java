@@ -10,60 +10,80 @@ import java.util.ArrayList;
 
 public class CreditCardDAO {
 
+    private Connection connection;
+
+    public CreditCardDAO() {
+
+        try {
+            this.connection = ConnectionManager.getInstance().getConnection();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+    }
+
     public void addCreditCard(String cardNumber, String cardExpirationDate, String cardSecurityCode) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO \"CreditCard\" (cardNumber, cardExpirationDate, cardSecurityCode) " +
                                    "VALUES ('%s', '%s', '%s')", cardNumber, cardExpirationDate, cardSecurityCode);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Credit Card added successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
         }
 
     }
 
     public void removeCreditCard(String cardNumber) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"CreditCard\" WHERE cardNumber = '%s'", cardNumber);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Credit Card removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
         }
 
     }
 
     public CreditCard getCreditCard(String cardNumber) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"CreditCard\" WHERE cardNumber = '%s'", cardNumber);
         CreditCard creditCard = null;
 
-        String query = String.format("SELECT * FROM \"User\" WHERE CreditCard = '%s'", cardNumber);
+        String sql = String.format("SELECT * FROM \"CreditCard\" WHERE cardNumber = '%s'", cardNumber);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PreparedStatement psQuery = connection.prepareStatement(query);
-            ResultSet rsQuery = psQuery.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                rsQuery.next();
-                creditCard = new CreditCard(rsQuery.getString("name"), rsQuery.getString("surname"), resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
+                String[] data = new UserDAO().getPersonalData("CreditCard", cardNumber);
+                creditCard = new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
             }
-            preparedStatement.close();
-            psQuery.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return creditCard;
@@ -72,24 +92,25 @@ public class CreditCardDAO {
 
     public CreditCard getCreditCard(int userId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"CreditCard\" WHERE cardNumber = (SELECT CreditCard FROM \"User\" WHERE id = %d)", userId);
         CreditCard creditCard = null;
 
-        String query = String.format("SELECT * FROM \"User\" WHERE id = %d", userId);
+        String sql = String.format("SELECT * FROM \"CreditCard\" WHERE cardNumber = (SELECT CreditCard FROM \"User\" WHERE id = %d)", userId);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PreparedStatement psQuery = connection.prepareStatement(query);
-            ResultSet rsQuery = psQuery.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                creditCard = new CreditCard(rsQuery.getString("name"), rsQuery.getString("surname"), resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
+                String[] data = new UserDAO().getPersonalData("CreditCard", resultSet.getString("cardNumber"));
+                creditCard = new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
             }
-            preparedStatement.close();
-            psQuery.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return creditCard;
@@ -98,25 +119,25 @@ public class CreditCardDAO {
 
     public ArrayList<CreditCard> getAllCreditCards() throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"CreditCard\"");
         ArrayList<CreditCard> creditCards = new ArrayList<CreditCard>();
 
+        String sql = String.format("SELECT * FROM \"CreditCard\"");
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String cardNumber = resultSet.getString("cardNumber");
-                String query = String.format("SELECT * FROM \"User\" WHERE CreditCard = '%s'", cardNumber);
-                PreparedStatement psQuery = connection.prepareStatement(query);
-                ResultSet rsQuery = psQuery.executeQuery();
-                rsQuery.next();
-                creditCards.add(new CreditCard(rsQuery.getString("name"), rsQuery.getString("surname"), cardNumber, resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode")));
-                psQuery.close();
+                String[] data = new UserDAO().getPersonalData("CreditCard", resultSet.getString("cardNumber"));
+                creditCards.add(new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode")));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return creditCards;

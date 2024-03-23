@@ -5,7 +5,6 @@ import main.java.ORM.UserDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UserProfileController {
 
@@ -28,13 +27,9 @@ public class UserProfileController {
 
     }
 
-    public void updateName() throws SQLException, ClassNotFoundException {
+    public void updateName(String newName) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        System.out.println("\nNew Name: ");
-        String newName = scanner.nextLine();
 
         userDAO.updateName(user.getUsername(), newName);
         user.setName(newName);
@@ -42,13 +37,9 @@ public class UserProfileController {
 
     }
 
-    public void updateSurname() throws SQLException, ClassNotFoundException {
+    public void updateSurname(String newSurname) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        System.out.println("\nNew Surname: ");
-        String newSurname = scanner.nextLine();
 
         userDAO.updateSurname(user.getUsername(), newSurname);
         user.setSurname(newSurname);
@@ -56,13 +47,9 @@ public class UserProfileController {
 
     }
 
-    public void updateAge() throws SQLException, ClassNotFoundException {
+    public void updateAge(int newAge) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        System.out.println("\nNew Age: ");
-        int newAge = scanner.nextInt();
 
         userDAO.updateAge(user.getUsername(), newAge);
         user.setAge(newAge);
@@ -70,30 +57,17 @@ public class UserProfileController {
 
     }
 
-    public void updateUsername() throws SQLException, ClassNotFoundException {
+    public ArrayList<String> getAllUsernames() throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
-        ArrayList<String> usernames = userDAO.getAllUsernames();
+        return userDAO.getAllUsernames();
 
-        String newUsername;
+    }
 
-        do {
+    public void updateUsername(String newUsername) throws SQLException, ClassNotFoundException {
 
-            System.out.println("\nNew Username: ");
-            newUsername = scanner.nextLine();
-
-            if (newUsername == null || newUsername.isEmpty()) {
-                System.out.println("Username cannot be null or empty.");
-                continue;
-            }
-
-            if (usernames.contains(newUsername)) {
-                System.out.println("Username already exists.");
-            }
-
-        } while (usernames.contains(newUsername));
+        UserDAO userDAO = new UserDAO();
 
         userDAO.updateUsername(user.getUsername(), newUsername);
         user.updateUsername(newUsername);
@@ -101,32 +75,17 @@ public class UserProfileController {
 
     }
 
-    public void updateEmail() throws SQLException, ClassNotFoundException {
+    public ArrayList<String> getAllEmails() throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
 
-        ArrayList<String> emails = userDAO.getAllEmails();
+        return userDAO.getAllEmails();
 
-        String newEmail;
+    }
 
-        System.out.println();
+    public void updateEmail(String newEmail) throws SQLException, ClassNotFoundException {
 
-        do {
-
-            System.out.println("New Email: ");
-            newEmail = scanner.nextLine();
-
-            if (newEmail == null || newEmail.isEmpty()) {
-                System.out.println("Email cannot be null or empty.");
-                continue;
-            }
-
-            if (emails.contains(newEmail)) {
-                System.out.println("Email already exists.");
-            }
-
-        } while (emails.contains(newEmail));
+        UserDAO userDAO = new UserDAO();
 
         userDAO.updateEmail(user.getUsername(), newEmail);
         user.updateEmail(newEmail);
@@ -134,25 +93,9 @@ public class UserProfileController {
 
     }
 
-    public void updatePassword() throws SQLException, ClassNotFoundException {
+    public void updatePassword(String newPassword) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        String newPassword;
-
-        System.out.println();
-
-        do {
-
-            System.out.println("New Password: ");
-            newPassword = scanner.nextLine();
-
-            if (newPassword == null || newPassword.isEmpty()) {
-                System.out.println("Password cannot be null or empty.");
-            }
-
-        } while (newPassword == null || newPassword.isEmpty());
 
         userDAO.updatePassword(user.getUsername(), newPassword);
         user.updatePassword(newPassword);
@@ -160,36 +103,17 @@ public class UserProfileController {
 
     }
 
-    public void setPaymentMethod() {
-
-        Scanner scanner = new Scanner(System.in);
-
-        if (user.getPaymentMethodType() != null) {
-            System.out.println("\nYou already have a payment method. Do you want to update it? (yes/no)");
-            String answer = scanner.nextLine();
-            if (answer.equals("yes")) {
-                try {
-                    updatePaymentMethod();
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                return;
-            }
-        }
-
-        System.out.println("\nPayment Method: ");
-        String paymentMethod = scanner.nextLine();
+    public void setPaymentMethod(String paymentMethod, String cardNumberORuniqueCode, String cardExpirationDateORaccountEmail, String cardSecurityCodeORaccountPassword) {
 
         if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("creditcard") || paymentMethod.equals("credit card")) {
             try {
-                updateCreditCard();
+                updateCreditCard(cardNumberORuniqueCode, cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         } else if (paymentMethod.equals("PayPal")) {
             try {
-                updatePayPal();
+                updatePayPal(cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -202,28 +126,13 @@ public class UserProfileController {
 
     public void updatePaymentMethod() throws SQLException, ClassNotFoundException {
 
-        UserDAO userDAO = new UserDAO();
-
-        userDAO.removePaymentMethod(user.getUsername());
-
-        setPaymentMethod();
+        // FIXME: obsolete method, to be removed (?)
 
     }
 
-    public void updateCreditCard() throws SQLException, ClassNotFoundException {
+    public void updateCreditCard(String cardNumber, String cardExpirationDate, String cardSecurityCode) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        userDAO.removePaymentMethod(user.getUsername());
-
-        System.out.println();
-        System.out.println("Card Number: ");
-        String cardNumber = scanner.nextLine();
-        System.out.println("Card Expiration Date: ");
-        String cardExpirationDate = scanner.nextLine();
-        System.out.println("Card Security Code: ");
-        String cardSecurityCode = scanner.nextLine();
 
         userDAO.updateCreditCard(user.getUsername(), cardNumber, cardExpirationDate, cardSecurityCode);
         user.setCreditCard(cardNumber, null, cardExpirationDate, cardSecurityCode);
@@ -232,18 +141,9 @@ public class UserProfileController {
 
     }
 
-    public void updatePayPal() throws SQLException, ClassNotFoundException {
+    public void updatePayPal(String accountEmail, String accountPassword) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        userDAO.removePaymentMethod(user.getUsername());
-
-        System.out.println();
-        System.out.println("Email: ");
-        String accountEmail = scanner.nextLine();
-        System.out.println("Password: ");
-        String accountPassword = scanner.nextLine();
 
         userDAO.updatePayPal(user.getUsername(), accountEmail, accountPassword);
 

@@ -10,75 +10,147 @@ import java.util.ArrayList;
 
 public class PayPalDAO {
 
-    public void addPayPalAccount(String email, String password) throws SQLException, ClassNotFoundException {
+    private Connection connection;
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("INSERT INTO \"PayPal\" (email, password) " +
-                                   "VALUES ('%s', '%s')" , email, password);
+    public PayPalDAO() {
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            this.connection = ConnectionManager.getInstance().getConnection();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public void addPayPalAccount(String email, String password) throws SQLException, ClassNotFoundException {
+
+        String sql = String.format("INSERT INTO \"PayPal\" (accountEmail, accountPassword) " +
+                                   "VALUES ('%s', '%s')" , email, password);
+
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("PayPal account added successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+        }
+
+    }
+
+    public void removePayPalAccount(int uniqueCode) throws SQLException, ClassNotFoundException {
+
+        String sql = String.format("DELETE FROM \"PayPal\" WHERE uniqueCode = '%d'", uniqueCode);
+
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+            System.out.println("PayPal account removed successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removePayPalAccount(String email) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("DELETE FROM \"PayPal\" WHERE email = '%s'", email);
+        String sql = String.format("DELETE FROM \"PayPal\" WHERE accountEmail = '%s'", email);
+
+        PreparedStatement preparedStatement = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("PayPal account removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
-    public void removePayPalAccount(int userId) throws SQLException, ClassNotFoundException {
+    public int getUniqueCode(String email) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("DELETE FROM \"PayPal\" WHERE uniqueCode = (SELECT PayPal FROM \"User\" WHERE id = %d)", userId);
+        int uniqueCode = 0;
+
+        String sql = String.format("SELECT uniqueCode FROM \"PayPal\" WHERE accountEmail = '%s'", email);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                uniqueCode = resultSet.getInt("uniqueCode");
+            }
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
+
+        return uniqueCode;
 
     }
 
-    public PayPal getPayPalAccount(int userId) throws SQLException, ClassNotFoundException {
+    public PayPal getPayPalAccountByUser(int userId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"PayPal\" WHERE accountEmail = (SELECT PayPal FROM \"User\" WHERE id = %d)", userId);
         PayPal payPal = null;
 
-        String query = String.format("SELECT * FROM \"User\" WHERE id = %d", userId);
+        String sql = String.format("SELECT * FROM \"PayPal\" WHERE accountEmail = (SELECT PayPal FROM \"User\" WHERE id = %d)", userId);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PreparedStatement psQuery = connection.prepareStatement(query);
-            ResultSet rsQuery = psQuery.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                payPal = new PayPal(rsQuery.getString("name"), rsQuery.getString("surname"), Integer.toString(resultSet.getInt("uniqueCode")),  resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
+                String[] data = new UserDAO().getPersonalData("PayPal", resultSet.getString("uniqueCode"));
+                payPal = new PayPal(data[0], data[1], Integer.toString(resultSet.getInt("uniqueCode")),  resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
             }
-            preparedStatement.close();
-            psQuery.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
+        }
+
+        return payPal;
+
+    }
+
+    public PayPal getPayPalAccount(int uniqueCode) throws SQLException, ClassNotFoundException {
+
+        PayPal payPal = null;
+
+        String sql = String.format("SELECT * FROM \"PayPal\" WHERE uniqueCode = '%d'", uniqueCode);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String[] data = new UserDAO().getPersonalData("PayPal", Integer.toString(uniqueCode));
+                payPal = new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return payPal;
@@ -87,27 +159,26 @@ public class PayPalDAO {
 
     public PayPal getPayPalAccount(String email) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"PayPal\" WHERE accountEmail = '%s'", email);
         PayPal payPal = null;
 
-        String uniqueCode = "";
+        String sql = String.format("SELECT * FROM \"PayPal\" WHERE accountEmail = '%s'", email);
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                uniqueCode = resultSet.getString("uniqueCode");
-                String query = String.format("SELECT * FROM \"User\" WHERE PayPal = '%s'", uniqueCode);
-                PreparedStatement psQuery = connection.prepareStatement(query);
-                ResultSet rsQuery = psQuery.executeQuery();
-                rsQuery.next();
-                payPal = new PayPal(rsQuery.getString("name"), rsQuery.getString("surname"), uniqueCode, resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
-                psQuery.close();
+                int uniqueCode = resultSet.getInt("uniqueCode");
+                String[] data = new UserDAO().getPersonalData("PayPal", Integer.toString(uniqueCode));
+                payPal = new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return payPal;
@@ -116,25 +187,26 @@ public class PayPalDAO {
 
     public ArrayList<PayPal> getAllPayPalAccounts() throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
-        String sql = String.format("SELECT * FROM \"PayPal\"");
         ArrayList<PayPal> payPals = new ArrayList<PayPal>();
 
+        String sql = String.format("SELECT * FROM \"PayPal\"");
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String uniqueCode = resultSet.getString("uniqueCode");
-                String query = String.format("SELECT * FROM \"User\" WHERE PayPal = '%s'", uniqueCode);
-                PreparedStatement psQuery = connection.prepareStatement(query);
-                ResultSet rsQuery = psQuery.executeQuery();
-                rsQuery.next();
-                payPals.add(new PayPal(rsQuery.getString("name"), rsQuery.getString("surname"), uniqueCode, resultSet.getString("accountEmail"), resultSet.getString("accountPassword")));
-                psQuery.close();
+                int uniqueCode = resultSet.getInt("uniqueCode");
+                String[] data = new UserDAO().getPersonalData("PayPal", Integer.toString(uniqueCode));
+                payPals.add(new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword")));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return payPals;

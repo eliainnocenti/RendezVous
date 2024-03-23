@@ -8,7 +8,6 @@ import main.java.ORM.ParticipationDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UserEventPageController {
 
@@ -40,38 +39,26 @@ public class UserEventPageController {
 
     }
 
-    public void searchAnEvent() throws SQLException, ClassNotFoundException {
+    public void searchAnEvent(String searchBy, String[] data) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
-
-        System.out.println("\nHow would you like to search for an event? (code, name, location, date)"); // FIXME: add more options
-        String searchBy = scanner.nextLine();
 
         ArrayList<Event> events = new ArrayList<Event>();
 
         if (searchBy.equals("code")) {
-            System.out.println("\nEvent Code: ");
-            int code = scanner.nextInt();
-            events.add(eventDAO.getEvent(code));
+            events.add(eventDAO.getEvent(Integer.parseInt(data[0])));
         } else if (searchBy.equals("name")) {
-            System.out.println("\nEvent Name: ");
-            String name = scanner.nextLine();
-            events = eventDAO.getEventsByName(name);
+            events = eventDAO.getEventsByName(data[1]);
         } else if (searchBy.equals("location")) {
-            System.out.println("\nEvent Location: ");
-            String location = scanner.nextLine();
-            events = eventDAO.getEventsByLocation(location);
+            events = eventDAO.getEventsByLocation(data[2]);
         } else if (searchBy.equals("date")) {
-            System.out.println("\nEvent Date: ");
-            String date = scanner.nextLine();
-            events = eventDAO.getEventsByDate(date);
+            events = eventDAO.getEventsByDate(data[3]);
         } else {
             System.out.println("Invalid search option.");
             return;
         }
 
-        if (events.size() == 0) {
+        if (events.isEmpty()) {
             System.out.println("No events found.");
             return;
         }
@@ -94,15 +81,10 @@ public class UserEventPageController {
 
     }
 
-    public void attendAnEvent() throws SQLException, ClassNotFoundException {
+    public void attendAnEvent(int code) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
         ParticipationDAO participationDAO = new ParticipationDAO();
-
-        System.out.println("\nEvent Code: ");
-        int code = scanner.nextInt();
-        scanner.nextLine();
 
         if (eventDAO.getEvent(code) == null) {
             System.out.println("Event not found.");
@@ -151,14 +133,9 @@ public class UserEventPageController {
 
     }
 
-    public void removeParticipation() throws SQLException, ClassNotFoundException {
+    public void removeParticipation(int code) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         ParticipationDAO participationDAO = new ParticipationDAO();
-
-        System.out.println("\nEvent Code: ");
-        int code = scanner.nextInt();
-        scanner.nextLine();
 
         Event event = participationDAO.getParticipation(user.getId(), code).getEvent();
 

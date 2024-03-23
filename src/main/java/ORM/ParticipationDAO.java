@@ -12,136 +12,166 @@ import java.util.ArrayList;
 
 public class ParticipationDAO {
 
+    private Connection connection;
+
+    public ParticipationDAO() {
+
+        try {
+            this.connection = ConnectionManager.getInstance().getConnection();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+    }
+
     public void addParticipation(int userId, int eventId, String paymentMethod) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO \"Participation\" (user_id, event_id, paymentMethod) " +
                                    "VALUES (%d, %d, '%s')", userId, eventId, paymentMethod);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participation added successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void addParticipation(String username, int eventId, String paymentMethod) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO \"Participation\" (user_id, event_id, paymentMethod) " +
                                    "VALUES ((SELECT id FROM \"User\" WHERE username = '%s'), %d, '%s')", username, eventId, paymentMethod);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participation added successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removeParticipation(int userId, int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"Participation\" WHERE user_id = %d AND event_id = %d", userId, eventId);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participation removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removeParticipation(String username, int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"Participation\" WHERE user_id = (SELECT id FROM \"User\" WHERE username = '%s') AND event_id = %d", username, eventId);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participation removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removeAllParticipationsByUser(int userId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"Participation\" WHERE user_id = %d", userId);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removeAllParticipationsByUser(String username) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"Participation\" WHERE user_id = (SELECT id FROM \"User\" WHERE username = '%s')", username);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public void removeAllParticipationsByEvent(int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("DELETE FROM \"Participation\" WHERE event_id = %d", eventId);
 
+        PreparedStatement preparedStatement = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println(""); // TODO: add message
+            System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
         }
 
     }
 
     public Participation getParticipation(int userId, int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("SELECT * FROM \"Participation\" WHERE user_id = %d AND event_id = %d", userId, eventId);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 return new Participation(user, event, resultSet.getString("paymentMethod"));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return null;
@@ -150,20 +180,24 @@ public class ParticipationDAO {
 
     public Participation getParticipation(String username, int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
         String sql = String.format("SELECT * FROM \"Participation\" WHERE user_id = (SELECT id FROM \"User\" WHERE username = '%s') AND event_id = %d", username, eventId);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 return new Participation(user, event, resultSet.getString("paymentMethod"));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
         return null;
@@ -172,120 +206,150 @@ public class ParticipationDAO {
 
     public ArrayList<Participation> getParticipationsByUser(int userId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
+        ArrayList<Participation> participations = new ArrayList<Participation>();
+
         String sql = String.format("SELECT * FROM \"Participation\" WHERE user_id = %d", userId);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Participation> participations = new ArrayList<Participation>();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
-            preparedStatement.close();
-            return participations;
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
-        return null;
+        if (participations.isEmpty()) { return null; }
+
+        return participations;
 
     }
 
     public ArrayList<Participation> getParticipationsByUser(String username) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
+        ArrayList<Participation> participations = new ArrayList<Participation>();
+
         String sql = String.format("SELECT * FROM \"Participation\" WHERE user_id = (SELECT id FROM \"User\" WHERE username = '%s')", username);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Participation> participations = new ArrayList<Participation>();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
-            preparedStatement.close();
-            return participations;
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
-        return null;
+        if (participations.isEmpty()) { return null; }
+
+        return participations;
 
     }
 
     public ArrayList<Participation> getParticipationsByEvent(int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
+        ArrayList<Participation> participations = new ArrayList<Participation>();
+
         String sql = String.format("SELECT * FROM \"Participation\" WHERE event_id = %d", eventId);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Participation> participations = new ArrayList<Participation>();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
-            preparedStatement.close();
-            return participations;
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
-        return null;
+        if (participations.isEmpty()) { return null; }
+
+        return participations;
 
     }
 
     public ArrayList<Participation> getAllParticipations() throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
+        ArrayList<Participation> participations = new ArrayList<Participation>();
+
         String sql = String.format("SELECT * FROM \"Participation\" ORDER BY event_id, user_id");
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Participation> participations = new ArrayList<Participation>();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 Event event = new EventDAO().getEvent(resultSet.getInt("event_id"));
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
-            preparedStatement.close();
-            return participations;
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
-        return null;
+        if (participations.isEmpty()) { return null; }
+
+        return participations;
 
     }
 
     public ArrayList<User> getParticipants(int eventId) throws SQLException, ClassNotFoundException {
 
-        Connection connection = ConnectionManager.getConnection();
+        ArrayList<User> participants = new ArrayList<User>();
+
         String sql = String.format("SELECT * FROM \"Participation\" WHERE event_id = %d", eventId);
 
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<User> participants = new ArrayList<User>();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new UserDAO().getUser(resultSet.getInt("user_id"));
                 participants.add(user);
             }
-            preparedStatement.close();
-            return participants;
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("" + e.getMessage()); // TODO: add message
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) { preparedStatement.close(); }
+            if (resultSet != null) { resultSet.close(); }
         }
 
-        return null;
+        if (participants.isEmpty()) { return null; }
+
+        return participants;
 
     }
 
