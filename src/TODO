@@ -2,43 +2,17 @@
 
 // TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
 
-// FIXME: think what is the best way to handle the exceptions
-/*
+// FIXME: check error messages (they must be System.err.println)
 
-    PreparedStatement preparedStatement = null;
-    try {
-        preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.executeUpdate();
-        System.out.println(""); // add a message
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // or System.err.println("" + e.getMessage());
-    } finally {
-        preparedStatement.close();
-    }
-
-    or
-
-    try {
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-        System.out.println("");
-    } catch (SQLException e) {
-        System.err.println("" + e.getMessage());
-        // or e.printStackTrace();
-    }
-
-*/
-
-// TODO: check all the .close() methods
-
-// FIXME: encapsulate methods in UserDAO using CreditCardDAO and PayPalDAO (check if there are more)
-
-// TODO: put messages in the try-catch blocks
+// FIXME: creditcard deleting
 
 // TODO: decide if it's opportune to test the DAO classes' methods
 
 // TODO: implement the tests
 
 // TODO: general check of the code and general refactor
+
+
+mapper Participation
+
+singleton

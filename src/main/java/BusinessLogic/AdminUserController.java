@@ -6,7 +6,6 @@ import main.java.ORM.UserDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class AdminUserController {
 
@@ -35,13 +34,9 @@ public class AdminUserController {
 
     }
 
-    public void searchUser() throws SQLException, ClassNotFoundException {
+    public void searchUser(String username) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        System.out.println("\nUsername: ");
-        String username = scanner.nextLine();
 
         User user = userDAO.getUser(username);
 
@@ -67,22 +62,19 @@ public class AdminUserController {
 
     }
 
-    public void addUser() throws SQLException, ClassNotFoundException {
+    public void addUser(String name, String surname, int age, String username, String email, String password, String paymentMethod, String cardNumberORuniqueCode, String cardExpirationDateORaccountEmail, String cardSecurityCodeORaccountPassword) throws SQLException, ClassNotFoundException {
 
         LoginController loginController = new LoginController();
 
-        loginController.register();
+        loginController.register(name, surname, age, username, email, password, paymentMethod, cardNumberORuniqueCode, cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
+
         System.out.println("\nUser added successfully.");
 
     }
 
-    public void removeUser() throws SQLException, ClassNotFoundException {
+    public void removeUser(String username) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         UserDAO userDAO = new UserDAO();
-
-        System.out.println("\nUsername: ");
-        String username = scanner.nextLine();
 
         if (userDAO.getUser(username) == null) {
             System.out.println("User not found.");

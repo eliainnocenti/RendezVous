@@ -9,7 +9,6 @@ import main.java.ORM.RequestDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class AdminEventController {
 
@@ -32,16 +31,9 @@ public class AdminEventController {
 
     }
 
-    public void removeRequest() throws SQLException, ClassNotFoundException {
+    public void removeRequest(int code) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         RequestDAO requestDAO = new RequestDAO();
-
-        int code;
-        do {
-            System.out.println("\nUser ID: ");
-            code = scanner.nextInt();
-        } while (code < 0);
 
         requestDAO.removeRequest(code);
 
@@ -84,52 +76,9 @@ public class AdminEventController {
 
     }
 
-    public void addEvent() throws SQLException, ClassNotFoundException {
+    public void addEvent(String name, String description, String location, String date, String time, boolean refundable, float fee) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
-
-        String name;
-        do {
-            System.out.println("\nEvent Name: ");
-            name = scanner.nextLine();
-        } while (name == null || name.isEmpty() || name.length() > 50);
-
-        System.out.println("Event Description: ");
-        String description = scanner.nextLine();
-
-        String location;
-        do {
-            System.out.println("Event Location: ");
-            location = scanner.nextLine();
-        } while (location == null || location.isEmpty() || location.length() > 50);
-
-        String date;
-        do {
-            System.out.println("Event Date: ");
-            date = scanner.nextLine();
-        } while (date == null || date.isEmpty() || date.length() > 50);
-
-        String time;
-        do {
-            System.out.println("Event Time: ");
-            time = scanner.nextLine();
-        } while (time == null || time.isEmpty() || time.length() > 50);
-
-        float fee;
-        do {
-            System.out.println("Event Fee: ");
-            fee = scanner.nextFloat();
-            scanner.nextLine();
-        } while (fee < 0);
-
-        boolean refundable;
-        String refundableString;
-        do {
-            System.out.println("Refundable? (yes/no)");
-            refundableString = scanner.nextLine().toLowerCase();
-        } while (refundableString.isEmpty() || (!refundableString.equals("yes") && !refundableString.equals("no")  && !refundableString.equals("Yes") && !refundableString.equals("No")));
-        refundable = refundableString.equals("yes");
 
         eventDAO.addEvent(name, description, location, date, time, refundable, fee, 0);
 
@@ -137,87 +86,26 @@ public class AdminEventController {
 
     }
 
-    public void editEvent() throws SQLException, ClassNotFoundException {
+    public void editEvent(int code, String[] options, String[] edits) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
         RequestDAO requestDAO = new RequestDAO();
 
-        int code;
-        do {
-            System.out.println("\nEvent Code: ");
-            code = scanner.nextInt();
-            scanner.nextLine();
-        } while (code < 0);
-
-        System.out.println("\nWhat do you want to change? (you can choose multiple options written in a space-separated list)");
-        System.out.println(
-                """
-                
-                 1. Name
-                 2. Location
-                 3. Date
-                 4. Time
-                 5. Fee
-                 6. Refundable
-                """
-        );
-        String[] options = scanner.nextLine().split(" ");
-
         for (String option : options) {
             switch (option) {
-                case "1" -> {
-                    String name;
-                    do {
-                        System.out.println("\nNew Name: ");
-                        name = scanner.nextLine();
-                    } while (name == null || name.isEmpty() || name.length() > 50);
-                    eventDAO.updateName(code, name);
-                }
-                case "2" -> {
-                    String location;
-                    do {
-                        System.out.println("New Location: ");
-                        location = scanner.nextLine();
-                    } while (location == null || location.isEmpty() || location.length() > 50);
-                    eventDAO.updateLocation(code, location);
-                }
-                case "3" -> {
-                    String date;
-                    do {
-                        System.out.println("New Date: ");
-                        date = scanner.nextLine();
-                    } while (date == null || date.isEmpty() || date.length() > 50);
-                    eventDAO.updateDate(code, date);
-                }
-                case "4" -> {
-                    String time;
-                    do {
-                        System.out.println("New Time: ");
-                        time = scanner.nextLine();
-                    } while (time == null || time.isEmpty() || time.length() > 50);
-                    eventDAO.updateTime(code, time);
-                }
+                case "1" -> eventDAO.updateName(code, edits[0]);
+                case "2" -> eventDAO.updateLocation(code, edits[1]);
+                case "3" -> eventDAO.updateDate(code, edits[2]);
+                case "4" -> eventDAO.updateTime(code, edits[3]);
                 case "5" -> {
-                    float fee;
-                    do {
-                        System.out.println("New Fee: ");
-                        fee = scanner.nextFloat();
-                    } while (fee < 0);
                     if (!eventDAO.getParticipants(code).isEmpty())
-                        eventDAO.updateFee(code, fee);
+                        eventDAO.updateFee(code, Float.parseFloat(edits[4]));
                     else {
                         System.out.println("Event has participants. Fee cannot be changed.");
                     }
                 }
                 case "6" -> {
-                    boolean refundable;
-                    String refundableString;
-                    do {
-                        System.out.println("Refundable? (yes/no)");
-                        refundableString = scanner.nextLine();
-                    } while (refundableString == null || (!refundableString.equals("yes") && !refundableString.equals("no")));
-                    refundable = refundableString.equals("yes");
+                    boolean refundable = edits[5].equals("yes");
                     eventDAO.updateRefundable(code, refundable);
                 }
             }
@@ -227,16 +115,9 @@ public class AdminEventController {
 
     }
 
-    public void removeEvent() throws SQLException, ClassNotFoundException {
+    public void removeEvent(int code) throws SQLException, ClassNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
         EventDAO eventDAO = new EventDAO();
-
-        int code;
-        do {
-            System.out.println("\nEvent Code: ");
-            code = scanner.nextInt();
-        } while (code < 0);
 
         eventDAO.removeEvent(code);
 
