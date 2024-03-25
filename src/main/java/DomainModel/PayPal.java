@@ -71,15 +71,28 @@ public class PayPal implements PaymentStrategy {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
+
+        System.out.println("Enter your paypal account password:");
+
+        String password;
+        boolean isTrue;
+
+        do {
+            password = scanner.nextLine();
+            isTrue = password.equals(accountPassword);
+            if (!isTrue) {
+                System.out.println("Incorrect password! Try again:");
+            }
+        } while (!isTrue);
 
         System.out.println("Connecting with the server...");
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Payment successful!");
@@ -102,7 +115,7 @@ public class PayPal implements PaymentStrategy {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Connecting to the server...");
@@ -110,7 +123,7 @@ public class PayPal implements PaymentStrategy {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Refund successful!");

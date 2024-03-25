@@ -1,10 +1,12 @@
 // TODOs AND FIXMEs
 
+// TODO: implement the mapper design pattern for the Participation class !!!
+
 // TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
 
 // FIXME: check error messages (they must be System.err.println)
 
-// FIXME: creditcard deleting
+// TODO: make the pay() and refund() methods more articulated and different from each other
 
 // TODO: decide if it's opportune to test the DAO classes' methods
 
@@ -12,7 +14,6 @@
 
 // TODO: general check of the code and general refactor
 
+// TODO - FIME: update the UML diagram, the use case diagram and the er diagram
 
-mapper Participation
-
-singleton
+// TODO: make the user flow diagram

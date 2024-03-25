@@ -163,8 +163,7 @@ public class UserDAO {
 
         try {
             User user = getUser(username);
-            if (user.getPaymentMethodType().equals("CreditCard")) {
-                // FIXME: creditCard elimination is not working
+            if (user.getPaymentMethodType().equals("Credit Card")) {
                 CreditCardDAO creditCardDAO = new CreditCardDAO();
                 String cardNumber = getCardNumber(username);
                 sql = String.format("UPDATE \"User\" SET creditCard = NULL WHERE username = '%s'", username);
@@ -232,11 +231,11 @@ public class UserDAO {
                         user = new User(id, name, surname, age, username, email, password);
                     }
                 } else {
-                    System.out.println("Invalid password. Please try again.");
+                    System.err.println("Invalid password. Please try again.");
                     return null;
                 }
             } else {
-                System.out.println("Invalid username. Please try again."); // FIXME: it asks the password anyway
+                System.err.println("Invalid username. Please try again."); // FIXME: it asks the password anyway
                 return null;
             }
         } catch (SQLException e) {
@@ -280,7 +279,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -320,7 +319,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }

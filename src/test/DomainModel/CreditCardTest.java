@@ -22,7 +22,7 @@ public class CreditCardTest {
 
         System.out.println("CreditCardTest: payTest()");
 
-        String simulatedUserInput = "yes";
+        String simulatedUserInput = "yes\nTest security code\n";
         InputStream savedStandardInputStream = System.in;
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 

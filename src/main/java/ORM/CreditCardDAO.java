@@ -34,7 +34,7 @@ public class CreditCardDAO {
             preparedStatement.executeUpdate();
             System.out.println("Credit Card added successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -54,7 +54,7 @@ public class CreditCardDAO {
             preparedStatement.executeUpdate();
             System.out.println("Credit Card removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -80,7 +80,7 @@ public class CreditCardDAO {
                 creditCard = new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -107,7 +107,7 @@ public class CreditCardDAO {
                 creditCard = new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -134,7 +134,7 @@ public class CreditCardDAO {
                 creditCards.add(new CreditCard(data[0], data[1], resultSet.getString("cardNumber"), resultSet.getString("cardExpirationDate"), resultSet.getString("cardSecurityCode")));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }

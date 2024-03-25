@@ -26,4 +26,4 @@ Inoltre è stato connesso anche un database in cui vengono salvati tutti i dati 
 
 ### Struttura del progetto
 
-![Struttura del progetto](../diagrams/project_structure/ProjectStructure_tmp.png)
+![Struttura del progetto](../diagrams/project_structure/project_structure_tmp.png)

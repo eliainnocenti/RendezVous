@@ -10,14 +10,14 @@ DROP TABLE IF EXISTS "Request" CASCADE;
 CREATE TABLE "CreditCard" (
 	cardNumber VARCHAR(50) PRIMARY KEY,
 	cardType VARCHAR(50),
-	cardExpirationDate VARCHAR(50),
-	cardSecurityCode VARCHAR(50)
+	cardExpirationDate VARCHAR(50) NOT NULL,
+	cardSecurityCode VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE "PayPal" (
 	uniqueCode SERIAL PRIMARY KEY,
-	accountEmail VARCHAR(100) UNIQUE,
-	accountPassword VARCHAR(100)
+	accountEmail VARCHAR(100) NOT NULL UNIQUE,
+	accountPassword VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE "User" (
@@ -37,21 +37,24 @@ CREATE TABLE "User" (
 
 CREATE TABLE "Event" (
 	code SERIAL PRIMARY KEY,
-	name VARCHAR(50) NOT NULL,
+	name VARCHAR(50) NOT NULL UNIQUE,
 	description VARCHAR(500),
 	location VARCHAR(100) NOT NULL,
 	date VARCHAR(20) NOT NULL,
 	time VARCHAR(20) NOT NULL,
 	refundable BOOLEAN NOT NULL,
 	fee FLOAT NOT NULL,
-	created_by INTEGER NOT NULL
+	created_by INTEGER NOT NULL,
+    FOREIGN KEY (created_by) REFERENCES "User"(id)
 );
 
 CREATE TABLE "Participation" (
-	user_id INTEGER,
-	event_id INTEGER,
-	paymentMethod VARCHAR(50),
-	PRIMARY KEY (user_id, event_id)
+	user_id INTEGER NOT NULL,
+	event_id INTEGER NOT NULL,
+	paymentMethod VARCHAR(50) NOT NULL,
+	PRIMARY KEY (user_id, event_id),
+    FOREIGN KEY (user_id) REFERENCES "User"(id),
+    FOREIGN KEY (event_id) REFERENCES "Event"(code)
 );
 
 CREATE TABLE "Request" (

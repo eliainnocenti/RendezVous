@@ -36,7 +36,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participation added successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -55,7 +55,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participation added successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -73,7 +73,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participation removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -91,7 +91,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participation removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -109,7 +109,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -127,7 +127,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -145,7 +145,7 @@ public class ParticipationDAO {
             preparedStatement.executeUpdate();
             System.out.println("Participations removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -168,7 +168,7 @@ public class ParticipationDAO {
                 return new Participation(user, event, resultSet.getString("paymentMethod"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -194,7 +194,7 @@ public class ParticipationDAO {
                 return new Participation(user, event, resultSet.getString("paymentMethod"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -222,7 +222,7 @@ public class ParticipationDAO {
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -252,7 +252,7 @@ public class ParticipationDAO {
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -282,7 +282,7 @@ public class ParticipationDAO {
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -312,7 +312,7 @@ public class ParticipationDAO {
                 participations.add(new Participation(user, event, resultSet.getString("paymentMethod")));
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -341,7 +341,7 @@ public class ParticipationDAO {
                 participants.add(user);
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }

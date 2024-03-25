@@ -91,6 +91,11 @@ public class UserEventPageController {
             return;
         }
 
+        if (user.getPaymentMethod() == null) {
+            System.out.println("You must set a payment method before attending an event.");
+            return;
+        }
+
         if (participationDAO.getParticipation(user.getId(), code) != null) {
             System.out.println("You have already attended the event.");
             return;
@@ -149,6 +154,8 @@ public class UserEventPageController {
         System.out.println("You have successfully removed your participation.");
 
         // FIXME: with this implementation, the refund is done with the current user's payment method, not with the one used to pay for the event
+
+        // FIXME: in fact, if the user delete the payment method, the refund will not be possible (NullPointerException)
 
         if (event.getFee() > 0 && event.isRefundable()) {
             user.getPaymentMethod().refund(event);

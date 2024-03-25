@@ -70,15 +70,28 @@ public class CreditCard implements PaymentStrategy {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
+
+        System.out.println("Enter your credit card security code:");
+
+        String password;
+        boolean isTrue;
+
+        do {
+            password = scanner.nextLine();
+            isTrue = password.equals(cardSecurityCode);
+            if (!isTrue) {
+                System.out.println("Incorrect security code! Try again:");
+            }
+        } while (!isTrue);
 
         System.out.println("Connecting to the bank...");
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Payment successful!");
@@ -101,7 +114,7 @@ public class CreditCard implements PaymentStrategy {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Connecting to the bank...");
@@ -109,7 +122,7 @@ public class CreditCard implements PaymentStrategy {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
 
         System.out.println("Refund successful!");

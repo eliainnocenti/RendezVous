@@ -34,7 +34,7 @@ public class PayPalDAO {
             preparedStatement.executeUpdate();
             System.out.println("PayPal account added successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -52,7 +52,7 @@ public class PayPalDAO {
             preparedStatement.executeUpdate();
             System.out.println("PayPal account removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -70,7 +70,7 @@ public class PayPalDAO {
             preparedStatement.executeUpdate();
             System.out.println("PayPal account removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
         }
@@ -93,7 +93,7 @@ public class PayPalDAO {
                 uniqueCode = resultSet.getInt("uniqueCode");
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -120,7 +120,7 @@ public class PayPalDAO {
                 payPal = new PayPal(data[0], data[1], Integer.toString(resultSet.getInt("uniqueCode")),  resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -147,7 +147,7 @@ public class PayPalDAO {
                 payPal = new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -175,7 +175,7 @@ public class PayPalDAO {
                 payPal = new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword"));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }
@@ -203,7 +203,7 @@ public class PayPalDAO {
                 payPals.add(new PayPal(data[0], data[1], Integer.toString(uniqueCode), resultSet.getString("accountEmail"), resultSet.getString("accountPassword")));
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         } finally {
             if (preparedStatement != null) { preparedStatement.close(); }
             if (resultSet != null) { resultSet.close(); }

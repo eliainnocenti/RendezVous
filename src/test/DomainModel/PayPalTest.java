@@ -22,7 +22,7 @@ public class PayPalTest {
 
         System.out.println("PayPalTest: payTest()");
 
-        String simulatedUserInput = "yes";
+        String simulatedUserInput = "yes\nTest account password\n";
         InputStream savedStandardInputStream = System.in;
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 
