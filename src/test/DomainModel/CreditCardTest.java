@@ -17,12 +17,12 @@ public class CreditCardTest {
     @Test
     void payTest() {
 
-        User user = new User(1, "Test name", "Test surname", 20, "Test email", "Test username", "Test password", "Credit Card", "Test card number", "Test expiration date", "Test security code");
-        Event event = new Event("Test event", "Test description", "Test location", "Test date", "Test time", false, 10.0f, 1);
+        User user = new User(1, "Mario", "Rossi", 30, "mario.rossi", "mario.rossi@gmail.com", "Password1", "Credit Card", "135895322", "2025-12-31", "473");
+        Event event = new Event("Festa della Madonna Bruna", "Religious procession with a final firework show", "Matera", "2024-07-02", "20:00", true, 10.0f, 7);
 
         System.out.println("CreditCardTest: payTest()");
 
-        String simulatedUserInput = "yes\nTest security code\n";
+        String simulatedUserInput = "yes\n473\n";
         InputStream savedStandardInputStream = System.in;
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 
@@ -35,8 +35,8 @@ public class CreditCardTest {
     @Test
     void refundTest() {
 
-        User user = new User(1, "Test name", "Test surname", 20, "Test email", "Test username", "Test password", "Credit Card", "Test card number", "Test expiration date", "Test security code");
-        Event event = new Event("Test event", "Test description", "Test location", "Test date", "Test time", false, 10.0f, 1);
+        User user = new User(1, "Mario", "Rossi", 30, "mario.rossi", "mario.rossi@gmail.com", "Password1", "Credit Card", "135895322", "2025-12-31", "473");
+        Event event = new Event("Festa della Madonna Bruna", "Religious procession with a final firework show", "Matera", "2024-07-02", "20:00", true, 10.0f, 7);
 
         System.out.println("CreditCardTest: refundTest()");
 
@@ -49,7 +49,7 @@ public class CreditCardTest {
     @Test
     void getPaymentMethodTest() {
 
-        CreditCard creditCard = new CreditCard("Test name", "Test surname", "Test card number", "Test expiration date", "Test security code");
+        CreditCard creditCard = new CreditCard("Mario", "Rossi", "135895322", "2025-12-31", "473");
 
         assertEquals("Credit Card", creditCard.getPaymentMethod());
 
@@ -58,9 +58,9 @@ public class CreditCardTest {
     @Test
     void getPaymentDataTest() {
 
-        CreditCard creditCard = new CreditCard("Test name", "Test surname", "Test card number", "Test expiration date", "Test security code");
+        CreditCard creditCard = new CreditCard("Mario", "Rossi", "135895322", "2025-12-31", "473");
 
-        assertEquals("Owner: Test name Test surname\nCard number: Test card number\nExpiration date: Test expiration date\nSecurity code: Test security code", creditCard.getPaymentData());
+        assertEquals("Owner: Mario Rossi\nCard number: 135895322\nExpiration date: 2025-12-31\nSecurity code: 473", creditCard.getPaymentData());
 
     }
 

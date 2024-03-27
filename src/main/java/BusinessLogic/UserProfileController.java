@@ -12,21 +12,6 @@ public class UserProfileController {
 
     public UserProfileController(User user) { this.user = user; }
 
-    public void viewProfile() {
-
-        System.out.println("\nName: " + user.getName());
-        System.out.println("Surname: " + user.getSurname());
-        System.out.println("Age: " + user.getAge());
-        System.out.println("Username: " + user.getUsername());
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Password: " + user.getPassword());
-        if (user.getPaymentMethodType() != null) {
-            System.out.println("Payment Method: " + user.getPaymentMethodType());
-            System.out.println("Payment Data: \n" + user.getPaymentData());
-        }
-
-    }
-
     public void updateName(String newName) throws SQLException, ClassNotFoundException {
 
         UserDAO userDAO = new UserDAO();
@@ -105,28 +90,22 @@ public class UserProfileController {
 
     public void setPaymentMethod(String paymentMethod, String cardNumberORuniqueCode, String cardExpirationDateORaccountEmail, String cardSecurityCodeORaccountPassword) {
 
-        if (paymentMethod.equals("CreditCard") || paymentMethod.equals("Credit Card") || paymentMethod.equals("creditcard") || paymentMethod.equals("credit card")) {
+        if (paymentMethod.equals("CreditCard")) {
             try {
                 updateCreditCard(cardNumberORuniqueCode, cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
             } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Error: " + e.getMessage());
             }
         } else if (paymentMethod.equals("PayPal")) {
             try {
                 updatePayPal(cardExpirationDateORaccountEmail, cardSecurityCodeORaccountPassword);
             } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Error: " + e.getMessage());
             }
         } else {
             System.out.println("Invalid payment method.");
         }
 
-
-    }
-
-    public void updatePaymentMethod() throws SQLException, ClassNotFoundException {
-
-        // FIXME: obsolete method, to be removed (?)
 
     }
 

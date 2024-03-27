@@ -15,69 +15,31 @@ public class UserEventPageController {
 
     public UserEventPageController(User user) { this.user = user; }
 
-    public void viewEvents() throws SQLException, ClassNotFoundException {
+    public ArrayList<Event> viewEvents() throws SQLException, ClassNotFoundException {
 
         EventDAO eventDAO = new EventDAO();
 
-        ArrayList<Event> allEvents = eventDAO.getAllEvents();
-
-        System.out.println("\n+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        System.out.println("| Code | Name                                               | Description                                        | Location                                     | Date                | Time                | Refundable | Fee     | Created By   |");
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        for (Event event : allEvents)
-            System.out.printf("| %-4s | %-50s | %-50s | %-44s | %-19s | %-19s | %-10s | %-7s | %-12s |\n",
-                    event.getCode(),
-                    event.getName(),
-                    event.getDescription(),
-                    event.getLocation(),
-                    event.getDate(),
-                    event.getTime(),
-                    event.isRefundable() ? "Yes" : "No",
-                    Float.toString(event.getFee()),
-                    Integer.toString(event.getCreatedBy()));
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        return eventDAO.getAllEvents();
 
     }
 
-    public void searchAnEvent(String searchBy, String[] data) throws SQLException, ClassNotFoundException {
+    public ArrayList<Event> searchAnEvent(String searchBy, String data) throws SQLException, ClassNotFoundException {
 
         EventDAO eventDAO = new EventDAO();
 
         ArrayList<Event> events = new ArrayList<Event>();
 
         if (searchBy.equals("code")) {
-            events.add(eventDAO.getEvent(Integer.parseInt(data[0])));
+            events.add(eventDAO.getEvent(Integer.parseInt(data)));
         } else if (searchBy.equals("name")) {
-            events = eventDAO.getEventsByName(data[1]);
+            events = eventDAO.getEventsByName(data);
         } else if (searchBy.equals("location")) {
-            events = eventDAO.getEventsByLocation(data[2]);
+            events = eventDAO.getEventsByLocation(data);
         } else if (searchBy.equals("date")) {
-            events = eventDAO.getEventsByDate(data[3]);
-        } else {
-            System.out.println("Invalid search option.");
-            return;
+            events = eventDAO.getEventsByDate(data);
         }
 
-        if (events.isEmpty()) {
-            System.out.println("No events found.");
-            return;
-        }
-
-        System.out.println("\n+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        System.out.println("| Code | Name                                               | Description                                        | Location                                     | Date                | Time                | Refundable | Fee     | Created By   |");
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        for (Event event : events)
-            System.out.printf("| %-4s | %-50s | %-50s | %-44s | %-19s | %-19s | %-10s | %-7s | %-12s |\n",
-                    event.getCode(),
-                    event.getName(),
-                    event.getDescription(),
-                    event.getLocation(),
-                    event.getDate(),
-                    event.getTime(),
-                    event.isRefundable() ? "Yes" : "No",
-                    Float.toString(event.getFee()),
-                    Integer.toString(event.getCreatedBy()));
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        return events;
 
     }
 
@@ -114,27 +76,18 @@ public class UserEventPageController {
 
     }
 
-    public void viewAttendedEvents() throws SQLException, ClassNotFoundException {
+    public ArrayList<Event> viewAttendedEvents() throws SQLException, ClassNotFoundException {
 
         ParticipationDAO participationDAO = new ParticipationDAO();
 
         System.out.println("\nEvents Attended:");
 
-        System.out.println("\n+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        System.out.println("| Code | Name                                               | Description                                        | Location                                     | Date                | Time                | Refundable | Fee     | Created By   |");
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        ArrayList<Event> events = new ArrayList<Event>();
+
         for (Participation participation : participationDAO.getParticipationsByUser(user.getId()))
-            System.out.printf("| %-4s | %-50s | %-50s | %-44s | %-19s | %-19s | %-10s | %-7s | %-12s |\n",
-                    participation.getEvent().getCode(),
-                    participation.getEvent().getName(),
-                    participation.getEvent().getDescription(),
-                    participation.getEvent().getLocation(),
-                    participation.getEvent().getDate(),
-                    participation.getEvent().getTime(),
-                    participation.getEvent().isRefundable() ? "Yes" : "No",
-                    Float.toString(participation.getEvent().getFee()),
-                    Integer.toString(participation.getEvent().getCreatedBy()));
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+            events.add(participation.getEvent());
+
+        return events;
 
     }
 
@@ -142,11 +95,17 @@ public class UserEventPageController {
 
         ParticipationDAO participationDAO = new ParticipationDAO();
 
-        Event event = participationDAO.getParticipation(user.getId(), code).getEvent();
+        Participation participation = participationDAO.getParticipation(user.getId(), code);
 
-        if (event == null) {
+        if (participation == null) {
             System.out.println("You have not attended the event.");
             return;
+        }
+
+        Event event = participationDAO.getParticipation(user.getId(), code).getEvent();
+
+        if (!event.isRefundable()) {
+            System.out.println("The event is not refundable. Your participation will be removed anyway.");
         }
 
         participationDAO.removeParticipation(user.getId(), code);

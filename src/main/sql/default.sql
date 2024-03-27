@@ -24,7 +24,7 @@ INSERT INTO "PayPal" (accountEmail, accountPassword)
 DO $$
     DECLARE PayPalUniqueCode INTEGER;
     BEGIN
-        SELECT uniqueCode INTO PayPalUniqueCode FROM "PayPal" WHERE accountEmail = 'gio.verdi@gmail.com';
+        SELECT uniqueCode INTO PayPalUniqueCode FROM "PayPal" WHERE accountEmail = 'gio.verdi7@gmail.com';
         UPDATE "User" SET payPal = PayPalUniqueCode WHERE username = 'gio.verdi7';
 END $$;
 

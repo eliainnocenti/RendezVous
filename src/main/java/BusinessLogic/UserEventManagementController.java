@@ -7,6 +7,7 @@ import main.java.ORM.ParticipationDAO;
 import main.java.ORM.RequestDAO;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserEventManagementController {
 
@@ -22,54 +23,25 @@ public class UserEventManagementController {
 
     }
 
-    public void viewCreatedEvents() throws SQLException, ClassNotFoundException {
+    public ArrayList<Event> viewCreatedEvents() throws SQLException, ClassNotFoundException {
 
         EventDAO eventDAO = new EventDAO();
 
-        System.out.println("\nEvents:");
-
-        System.out.println("\n+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        System.out.println("| Code | Name                                               | Description                                        | Location                                     | Date                | Time                | Refundable | Fee     | Created By   |");
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
-        for (Event event : eventDAO.getEventsByCreator(user.getId()))
-            System.out.printf("| %-4s | %-50s | %-50s | %-44s | %-19s | %-19s | %-10s | %-7s | %-12s |\n",
-                    event.getCode(),
-                    event.getName(),
-                    event.getDescription(),
-                    event.getLocation(),
-                    event.getDate(),
-                    event.getTime(),
-                    event.isRefundable() ? "Yes" : "No",
-                    Float.toString(event.getFee()),
-                    Integer.toString(event.getCreatedBy()));
-        System.out.println("+------+----------------------------------------------------+----------------------------------------------------+----------------------------------------------+---------------------+---------------------+------------+---------+--------------+");
+        return eventDAO.getEventsByCreator(user.getId());
 
     }
 
-    public void viewCreatedEventsAttendees(int code) throws SQLException, ClassNotFoundException {
+    public ArrayList<User> viewCreatedEventsAttendees(int code) throws SQLException, ClassNotFoundException {
 
         ParticipationDAO participationDAO = new ParticipationDAO();
         EventDAO eventDAO = new EventDAO();
 
         if (eventDAO.getEvent(code).getCreatedBy() != user.getId()){
             System.out.println("You are not the creator of the event.");
-            return;
+            return null;
         }
 
-        System.out.println("\nAttendees:");
-
-        System.out.println("\n+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
-        System.out.println("| ID   | Name            | Surname         | Email                               | Username        | Payment Method  |");
-        System.out.println("+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
-        for (User user : participationDAO.getParticipants(code))
-            System.out.printf("| %-4s | %-15s | %-15s | %-35s | %-15s | %-15s |\n",
-                    user.getId(),
-                    user.getName(),
-                    user.getSurname(),
-                    user.getEmail(),
-                    user.getUsername(),
-                    user.getPaymentMethodType());
-        System.out.println("+------+-----------------+-----------------+-------------------------------------+-----------------+-----------------+");
+        return participationDAO.getParticipants(code);
 
     }
 

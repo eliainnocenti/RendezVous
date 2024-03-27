@@ -17,12 +17,12 @@ public class PayPalTest {
     @Test
     void payTest() {
 
-        User user = new User(1, "Test name", "Test surname", 20, "Test email", "Test username", "Test password", "PayPal", "1", "Test account email", "Test account password");
-        Event event = new Event("Test event", "Test description", "Test location", "Test date", "Test time", false, 10.0f, 1);
+        User user = new User(3, "Giovanni", "Verdi", 25, "gio.verdi7", "gio.verdi7@gmail.com", "giovanni7", "PayPal", "1", "gio.verdi7@gmail.com", "gio7");
+        Event event = new Event("Infiorata di Genzano", "Artistic event with flower carpets", "Genzano", "2024-06-12", "09:00", true, 5.00f, 5);
 
         System.out.println("PayPalTest: payTest()");
 
-        String simulatedUserInput = "yes\nTest account password\n";
+        String simulatedUserInput = "yes\ngio7\n";
         InputStream savedStandardInputStream = System.in;
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 
@@ -35,8 +35,8 @@ public class PayPalTest {
     @Test
     void refundTest() {
 
-        User user = new User(1, "Test name", "Test surname", 20, "Test email", "Test username", "Test password", "PayPal", "1", "Test account email", "Test account password");
-        Event event = new Event("Test event", "Test description", "Test location", "Test date", "Test time", false, 10.0f, 1);
+        User user = new User(3, "Giovanni", "Verdi", 25, "gio.verdi7", "gio.verdi7@gmail.com", "giovanni7", "PayPal", "1", "gio.verdi7@gmail.com", "gio7");
+        Event event = new Event("Infiorata di Genzano", "Artistic event with flower carpets", "Genzano", "2024-06-12", "09:00", true, 5.00f, 5);
 
         System.out.println("PayPalTest: refundTest()");
 
@@ -49,7 +49,7 @@ public class PayPalTest {
     @Test
     void getPaymentMethodTest() {
 
-        PayPal payPal = new PayPal("Test name", "Test surname", "1", "Test account email", "Test account password");
+        PayPal payPal = new PayPal("Giovanni", "Verdi", "1", "gio.verdi7@gmail.com", "gio7");
 
         assertEquals("PayPal", payPal.getPaymentMethod());
 
@@ -58,9 +58,9 @@ public class PayPalTest {
     @Test
     void getPaymentDataTest() {
 
-        PayPal payPal = new PayPal("Test name", "Test surname", "1", "Test account email", "Test account password");
+        PayPal payPal = new PayPal("Giovanni", "Verdi", "1", "gio.verdi7@gmail.com", "gio7");
 
-        assertEquals("Owner: Test name Test surname\nUnique code: 1\nAccount email: Test account email\nAccount password: Test account password", payPal.getPaymentData());
+        assertEquals("Owner: Giovanni Verdi\nUnique code: 1\nAccount email: gio.verdi7@gmail.com\nAccount password: gio7", payPal.getPaymentData());
 
     }
 

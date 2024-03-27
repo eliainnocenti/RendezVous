@@ -9,7 +9,6 @@ public class LoginController {
 
     public LoginController() {}
 
-    // sign in
     public User login(String username, String password) throws SQLException, ClassNotFoundException {
 
         UserDAO userDAO = new UserDAO();
@@ -18,7 +17,6 @@ public class LoginController {
 
     }
 
-    // sign up
     public User register(String name, String surname, int age, String username, String email, String password, String paymentMethod, String cardNumberORuniqueCode, String cardExpirationDateORaccountEmail, String cardSecurityCodeORaccountPassword) throws SQLException, ClassNotFoundException {
 
         UserDAO userDAO = new UserDAO();
@@ -31,7 +29,6 @@ public class LoginController {
 
     }
 
-    // admin login
     public User adminLogin(String password) throws SQLException, ClassNotFoundException {
 
         UserDAO userDAO = new UserDAO();

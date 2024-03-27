@@ -2,6 +2,16 @@
 
 // TODO: implement the mapper design pattern for the Participation class !!!
 
+// TODO: it can't be possible to create or attend an event with a past date
+
+// TODO: it can't be possible to be refunded if the event has already happened
+
+// TODO: it can't be possible to be refunded if the user is the creator of the event
+
+// TODO: put some .sleep() in some methods to simulate the time passing
+
+// TODO: remove some println (i.e. change the payment method from paypal to credit card)
+
 // TODO: check all the strings/attributes -> decide (if it is the case) if they must be null or empty strings
 
 // FIXME: check error messages (they must be System.err.println)
@@ -14,6 +24,12 @@
 
 // TODO: general check of the code and general refactor
 
-// TODO - FIME: update the UML diagram, the use case diagram and the er diagram
+// TODO: update the UML class diagram
+
+// TODO: update the project structure image
+
+// TODO: mockups and use case templates
+
+// TODO: do i have to put the input arguments and the return values in the class diagram?
 
 // TODO: make the user flow diagram

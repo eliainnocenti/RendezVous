@@ -61,7 +61,8 @@ CREATE TABLE "Request" (
 	code SERIAL PRIMARY KEY,
 	user_id INTEGER NOT NULL,
 	description VARCHAR(1000) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES "User"(id)
 	--PRIMARY KEY (user_id, created_at)
 );
 
